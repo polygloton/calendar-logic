@@ -10,3 +10,4 @@ pom.xml
 .lein-plugins
 /.idea/
 /*.iml
+/*.lein*
