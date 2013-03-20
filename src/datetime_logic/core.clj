@@ -6,10 +6,13 @@
     [clj-time.core :as time]
     [clojure.core.logic.fd :as fd]))
 
-; The following is a modification of the extending core.logic with Datomic example
+(defn- date-time? [dt]
+  (= (type dt) org.joda.time.DateTime))
+
+; The following extend-type calls are based on the extending core.logic with Datomic example:
 ; https://github.com/clojure/core.logic/wiki/Extending-core.logic-%28Datomic-example%29
 
-(defn unify-with-datetime* [u v s]
+(defn- unify-with-date-time* [u v s]
   (let [fns [time/year time/month time/day time/hour time/minute time/sec time/milli]]
     (when (and (coll? v) (> (count v) 0))
       (loop [fns fns
@@ -21,133 +24,90 @@
           :else (when-let [s (unify s (first v) ((first fns) u))]
                   (recur (rest fns) (next v) s)))))))
 
+(defn- unify-date-time-with-terms* [u v s]
+  (if (date-time? v)
+    (unify-with-date-time* v u s)
+    (when (sequential? v)
+      (unify-with-sequential* u v s))))
+
 (extend-type org.joda.time.DateTime
   IUnifyTerms
   (unify-terms [u v s]
-    (unify-with-datetime* u v s)))
+    (unify-with-date-time* u v s)))
 
-; Unifying against a DateTime requires that the DateTime be on the left side. Normally == shouldn't care about variable
-; order.  Using datetimeo instead of == when one unifying a DateTime with a collection of lvars seems safer to me.
-(defn datetimeo [date-time & vars]
-  (== date-time vars))
+(extend-type clojure.lang.PersistentVector
+  IUnifyTerms
+  (unify-terms [u v s]
+    (if (date-time? v)
+      (unify-with-date-time* v u s)
+      (when (sequential? v)
+        (unify-with-sequential* u v s)))))
 
-(defn gt-yearo
-  [dt-1 dt-2 out]
-  (fresh [year-1 year-2]
-    (datetimeo dt-1 year-1)
-    (datetimeo dt-2 year-2)
-    (fd/> year-1 year-2)
-    (== dt-1 out)))
+(defn date-timeo [dt & vars]
+  (== dt vars))
 
-(defn eq-yearo
-  [dt-1 dt-2 out]
-  (fresh [year-1 year-2]
-    (datetimeo dt-1 year-1)
-    (datetimeo dt-2 year-2)
-    (== year-1 year-2)
-    (== dt-1 out)))
-
-(defn gt-montho
-  [dt-1 dt-2 out]
-  (fresh [year-1 month-1 year-2 month-2]
-    (datetimeo dt-1 year-1 month-1)
-    (datetimeo dt-2 year-2 month-2)
+(defn compare-date-time-with-predo
+  [predo dt-1 dt-2 out]
+  (fresh [year-1 month-1 day-1 hour-1 minute-1 second-1 millisec-1
+          year-2 month-2 day-2 hour-2 minute-2 second-2 millisec-2]
+    (== dt-1 [year-1 month-1 day-1 hour-1 minute-1 second-1 millisec-1])
+    (== dt-2 [year-2 month-2 day-2 hour-2 minute-2 second-2 millisec-2])
     (conde
-      [(eq-yearo dt-1 dt-2 dt-1) (fd/> month-1 month-2)]
-      [(gt-yearo dt-1 dt-2 dt-1)])
+      [(predo year-1 year-2)]
+      [(== year-1 year-2) (predo month-1 month-2)]
+      [(== year-1 year-2) (== month-1 month-2) (predo day-1 day-2)]
+      [(== year-1 year-2) (== month-1 month-2) (== day-1 day-2) (predo hour-1 hour-2)]
+      [(== year-1 year-2) (== month-1 month-2) (== day-1 day-2) (== hour-1 hour-2) (predo minute-1 minute-2)]
+      [(== year-1 year-2) (== month-1 month-2) (== day-1 day-2) (== hour-1 hour-2) (== minute-1 minute-2) (predo second-1 second-2)]
+      [(== year-1 year-2) (== month-1 month-2) (== day-1 day-2) (== hour-1 hour-2) (== minute-1 minute-2) (== second-1 second-2) (predo millisec-1 millisec-2)])
     (== dt-1 out)))
 
-(defn eq-montho
+(defn beforeo
   [dt-1 dt-2 out]
-  (fresh [year-1 month-1 year-2 month-2]
-    (eq-yearo dt-1 dt-2 dt-1)
-    (datetimeo dt-1 year-1 month-1)
-    (datetimeo dt-2 year-2 month-2)
-    (== month-1 month-2)
-    (== out dt-1)))
+  (compare-date-time-with-predo fd/< dt-1 dt-2 out))
 
-(defn gt-dateo
+(defn aftero
   [dt-1 dt-2 out]
-  (fresh [year-1 month-1 date-1 year-2 month-2 date-2]
-    (datetimeo dt-1 year-1 month-1 date-1)
-    (datetimeo dt-2 year-2 month-2 date-2)
-    (conde
-      [(eq-montho dt-1 dt-2 dt-1) (fd/> date-1 date-2)]
-      [(gt-montho dt-1 dt-2 dt-1)])
+  (compare-date-time-with-predo fd/> dt-1 dt-2 out))
+
+(defn presento
+  [dt-1 dt-2 out]
+  (fresh [year month day hour minute second millisec]
+    (== dt-1 [year month day hour minute second millisec])
+    (== dt-2 [year month day hour minute second millisec])
     (== dt-1 out)))
 
-(defn eq-dateo
-  [dt-1 dt-2 out]
-  (fresh [year-1 month-1 date-1 year-2 month-2 date-2]
-    (eq-montho dt-1 dt-2 dt-1)
-    (datetimeo dt-1 year-1 month-1 date-1)
-    (datetimeo dt-2 year-2 month-2 date-2)
-    (== date-1 date-2)
-    (== out dt-1)))
+(defn yearo
+  [dt-1 year]
+  (fresh [month day hour minute second millisec]
+    (== dt-1 [year month day hour minute second millisec])))
 
-(defn gt-houro
-  [dt-1 dt-2 out]
-  (fresh [year-1 month-1 date-1 hour-1 year-2 month-2 date-2 hour-2]
-    (datetimeo dt-1 year-1 month-1 date-1 hour-1)
-    (datetimeo dt-2 year-2 month-2 date-2 hour-2)
-    (conde
-      [(eq-dateo dt-1 dt-2 dt-1) (fd/> hour-1 hour-2)]
-      [(gt-dateo dt-1 dt-2 dt-1)])
-    (== dt-1 out)))
+(defn montho
+  [dt-1 month]
+  (fresh [year day hour minute second millisec]
+    (== dt-1 [year month day hour minute second millisec])))
 
-(defn eq-houro
-  [dt-1 dt-2 out]
-  (fresh [year-1 month-1 date-1 hour-1 year-2 month-2 date-2 hour-2]
-    (eq-dateo dt-1 dt-2 dt-1)
-    (datetimeo dt-1 year-1 month-1 date-1 hour-1)
-    (datetimeo dt-2 year-2 month-2 date-2 hour-2)
-    (== hour-1 hour-2)
-    (== out dt-1)))
+(defn dayo
+  [dt-1 day]
+  (fresh [year month hour minute second millisec]
+    (== dt-1 [year month day hour minute second millisec])))
 
-(defn gt-minuteo
-  [dt-1 dt-2 out]
-  (fresh [year-1 month-1 date-1 hour-1 minute-1 year-2 month-2 date-2 hour-2 minute-2]
-    (datetimeo dt-1 year-1 month-1 date-1 hour-1 minute-1)
-    (datetimeo dt-2 year-2 month-2 date-2 hour-2 minute-2)
-    (conde
-      [(eq-houro dt-1 dt-2 dt-1) (fd/> minute-1 minute-2)]
-      [(gt-houro dt-1 dt-2 dt-1)])
-    (== dt-1 out)))
+(defn houro
+  [dt-1 hour]
+  (fresh [year month day minute second millisec]
+    (== dt-1 [year month day hour minute second millisec])))
 
-(defn eq-minuteo
-  [dt-1 dt-2 out]
-  (fresh [year-1 month-1 date-1 hour-1 minute-1 year-2 month-2 date-2 hour-2 minute-2]
-    (eq-houro dt-1 dt-2 dt-1)
-    (datetimeo dt-1 year-1 month-1 date-1 hour-1 minute-1)
-    (datetimeo dt-2 year-2 month-2 date-2 hour-2 minute-2)
-    (== minute-1 minute-2)
-    (== out dt-1)))
+(defn minuteo
+  [dt-1 minute]
+  (fresh [year month day hour second millisec]
+    (== dt-1 [year month day hour minute second millisec])))
 
-(defn gt-secondo
-  [dt-1 dt-2 out]
-  (fresh [year-1 month-1 date-1 hour-1 minute-1 second-1 year-2 month-2 date-2 hour-2 minute-2 second-2]
-    (datetimeo dt-1 year-1 month-1 date-1 hour-1 minute-1 second-1)
-    (datetimeo dt-2 year-2 month-2 date-2 hour-2 minute-2 second-2)
-    (conde
-      [(eq-minuteo dt-1 dt-2 dt-1) (fd/> second-1 second-2)]
-      [(gt-minuteo dt-1 dt-2 dt-1)])
-    (== dt-1 out)))
+(defn seco
+  [dt-1 second]
+  (fresh [year month day hour minute millisec]
+    (== dt-1 [year month day hour minute second millisec])))
 
-(defn eq-secondo
-  [dt-1 dt-2 out]
-  (fresh [year-1 month-1 date-1 hour-1 minute-1 second-1 year-2 month-2 date-2 hour-2 minute-2 second-2]
-    (eq-minuteo dt-1 dt-2 dt-1)
-    (datetimeo dt-1 year-1 month-1 date-1 hour-1 minute-1 second-1)
-    (datetimeo dt-2 year-2 month-2 date-2 hour-2 minute-2 second-2)
-    (== second-1 second-2)
-    (== out dt-1)))
-
-(defn gt-milliseco
-  [dt-1 dt-2 out]
-  (fresh [year-1 month-1 date-1 hour-1 minute-1 second-1 millisec-1 year-2 month-2 date-2 hour-2 minute-2 second-2 millisec-2]
-    (datetimeo dt-1 year-1 month-1 date-1 hour-1 minute-1 second-1 millisec-1)
-    (datetimeo dt-2 year-2 month-2 date-2 hour-2 minute-2 second-2 millisec-2)
-    (conde
-      [(eq-secondo dt-1 dt-2 dt-1) (fd/> millisec-1 millisec-2)]
-      [(gt-secondo dt-1 dt-2 dt-1)])
-    (== dt-1 out)))
+(defn millio
+  [dt-1 millisec]
+  (fresh [year month day hour minute second]
+    (== dt-1 [year month day hour minute second millisec])))

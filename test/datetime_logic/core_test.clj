@@ -3,233 +3,208 @@
   (:use
     clojure.test
     datetime-logic.core
-    [clojure.core.logic :exclude [is]])
-  (:require
-    [clj-time.core :as t]))
+    [clojure.core.logic :exclude [is]]
+    [clj-time.core :exclude [extend]]))
 
-(deftest datetime-unification-test
-  (let [dt (t/date-time 2013 3 18 9 41 30 30)]
-    (is (= '(2013) (run* [year] (== dt [year])))))
+(defmacro ie [& body]
+  `(is (= ~@body)))
 
-  (let [dt (t/date-time 2013 3 18 9 41 30 30)]
-    (is (= '([2013 3]) (run* [year month] (== dt [year month])))))
+(deftest unifying-date-times-test
+  (let [n (now)]
+    (ie [(year n)]
+      (run* [year]
+        (fresh [month day hour minute sec milli]
+          (== n [year month day hour minute sec milli]))))
 
-  (let [dt (t/date-time 2013 3 18 9 41 30 30)]
-    (is (= '([2013 3 18 9 41 30 30])
-           (run* [year month day hour minute second millisecond]
-             (== dt [year month day hour minute second millisecond])))))
-)
+    (ie [(year n)]
+      (run* [year]
+        (fresh [month day hour minute sec milli]
+          (== [year month day hour minute sec milli] n))))
 
-(deftest datetimeo-test
-  (let [dt (t/now)]
-    (is (= [(t/year dt)] (run* [year] (datetimeo dt year)))))
+    (ie [(minute n)]
+      (run* [minute]
+        (fresh [year month day hour sec milli]
+          (== n [year month day hour minute sec milli]))))
 
-  (let [dt (t/now)]
-    (is (= [[(t/year dt) (t/month dt)]] (run* [year month] (datetimeo dt year month)))))
-
-  (let [dt (t/now)]
-    (is (= [[(t/year dt) (t/month dt) (t/day dt) (t/hour dt) (t/minute dt) (t/sec dt) (t/milli dt)]]
-           (run* [year month day hour minute second millisecond]
-             (datetimeo dt year month day hour minute second millisecond)))))
-)
-
-(deftest gt-yearo-test
-  (let [dt-1 (t/date-time 2012 1 1 12 0 0)
-        dt-2 (t/date-time 2013 1 1 12 0 0)]
-    (is
-      (=
-        [dt-2]
-
-        (run* [out]
-          (gt-yearo dt-2 dt-1 out))))
-
-    (is
-      (=
-        []
-
-        (run* [out]
-          (gt-yearo dt-1 dt-2 out))))
-
-    (is
-      (=
-        [true]
-
-        (run* [q]
-          (gt-yearo dt-2 dt-1 dt-2) (== q true))))
+    (ie [(minute n)]
+      (run* [minute]
+        (fresh [year month day hour sec milli]
+          (== [year month day hour minute sec milli] n))))
   )
 )
 
-(deftest gt-montho-test
-  (let [dt-1 (t/date-time 2012 1 1 12 0 0)
-        dt-2 (t/date-time 2013 1 1 12 0 0)
-        dt-3 (t/date-time 2013 2 1 12 0 0)]
+(deftest date-timeo-test
+  (let [n (now)]
+    (ie [(year n) (month n) (day n) (hour n) (minute n) (sec n) (milli n)]
+      (first
+        (run* [year month day hour minute sec milli]
+          (date-timeo n year month day hour minute sec milli))))
 
-    (is
-      (=
-        [dt-3]
+    (ie [(year n) (month n) (day n) (hour n) (minute n) (sec n)]
+      (first
+        (run* [year month day hour minute sec]
+          (date-timeo n year month day hour minute sec))))
 
-        (run* [out]
-          (gt-montho dt-3 dt-2 out))))
+    (ie [(year n) (month n) (day n) (hour n) (minute n)]
+      (first
+        (run* [year month day hour minute]
+          (date-timeo n year month day hour minute))))
 
-    (is
-      (=
-        [dt-2]
+    (ie [(year n) (month n) (day n) (hour n)]
+      (first
+        (run* [year month day hour]
+          (date-timeo n year month day hour))))
 
-        (run* [out]
-          (gt-montho dt-2 dt-1 out))))
+    (ie [(year n) (month n) (day n)]
+      (first
+        (run* [year month day]
+          (date-timeo n year month day))))
 
-    (is
-      (=
-        []
+    (ie [(year n) (month n)]
+      (first
+        (run* [year month]
+          (date-timeo n year month))))
 
-        (run* [out]
-          (gt-montho dt-1 dt-2 out))))
+    (ie (year n)
+      (first
+        (run* [year]
+          (date-timeo n year))))
+
+    (ie '_0
+      (first
+        (run* [year]
+          (fresh [x]
+            (date-timeo x year)))))
+
+    (ie [(year n) (month n) (day n) (hour n) (minute n) (sec n) (milli n)]
+      (first
+        (run* [x]
+          (date-timeo x (year n) (month n) (day n) (hour n) (minute n) (sec n) (milli n)))))
+
+    (ie [(year n) (month n) (day n) (hour n) (minute n) (sec n)]
+      (first
+        (run* [x]
+          (date-timeo x (year n) (month n) (day n) (hour n) (minute n) (sec n)))))
+
+    (ie [(year n) (month n) (day n) (hour n) (minute n)]
+      (first
+        (run* [x]
+          (date-timeo x (year n) (month n) (day n) (hour n) (minute n)))))
+
+    (ie [(year n) (month n) (day n) (hour n)]
+      (first
+        (run* [x]
+          (date-timeo x (year n) (month n) (day n) (hour n)))))
+
+    (ie [(year n) (month n) (day n)]
+      (first
+        (run* [x]
+          (date-timeo x (year n) (month n) (day n)))))
+
+    (ie [(year n) (month n)]
+      (first
+        (run* [x]
+          (date-timeo x (year n) (month n)))))
+
+    (ie [(year n)]
+      (first
+        (run* [x]
+          (date-timeo x (year n)))))
   )
 )
 
-(deftest gt-dateo-test
-  (let [dt-1 (t/date-time 2012 1 1 12 0 0)
-        dt-2 (t/date-time 2013 1 1 12 0 0)
-        dt-3 (t/date-time 2013 2 1 12 0 0)
-        dt-4 (t/date-time 2013 2 2 12 0 0)]
+(deftest beforeo-test
+  (let [dt-1 (plus (now) (minutes 10))
+         dt-2 (plus (now) (minutes 15))]
+    (ie [dt-1]
+      (run* [out]
+        (beforeo dt-1 dt-2 out)))
 
-    (is
-      (=
-        [dt-4]
-
-        (run* [out]
-          (gt-dateo dt-4 dt-3 out))))
-
-    (is
-      (=
-        [dt-3]
-
-        (run* [out]
-          (gt-dateo dt-3 dt-2 out))))
-
-    (is
-      (=
-        []
-
-        (run* [out]
-          (gt-dateo dt-1 dt-2 out))))
+    (ie []
+      (run* [out]
+        (beforeo dt-2 dt-1 out)))
   )
 )
 
-(deftest gt-houro-test
-  (let [dt-3 (t/date-time 2013 2 1 12 0 0)
-        dt-4 (t/date-time 2013 2 2 12 0 0)
-        dt-5 (t/date-time 2013 2 2 13 0 0)]
+(deftest aftero-test
+  (let [dt-1 (plus (now) (minutes 10))
+        dt-2 (plus (now) (minutes 15))]
+    (ie []
+      (run* [out]
+        (aftero dt-1 dt-2 out)))
 
-    (is
-      (=
-        [dt-5]
-
-        (run* [out]
-          (gt-houro dt-5 dt-4 out))))
-
-    (is
-      (=
-        [dt-4]
-
-        (run* [out]
-          (gt-houro dt-4 dt-3 out))))
-
-    (is
-      (=
-        []
-
-        (run* [out]
-          (gt-houro dt-4 dt-5 out))))
+    (ie [dt-2]
+      (run* [out]
+        (aftero dt-2 dt-1 out)))
   )
 )
 
-(deftest gt-minuteo-test
-  (let [dt-6 (t/date-time 2013 2 2 13 10 0)
-        dt-7 (t/date-time 2013 2 2 14 10 0)
-        dt-8 (t/date-time 2013 2 2 14 20 0)]
+(deftest presento-test
+  (let [n (now)
+        dt-1 (date-time (year n) (month n) (day n) (hour n) (minute n) (sec n) (milli n))
+        dt-2 (date-time (year n) (month n) (day n) (hour n) (minute n) (sec n) (milli n))]
+    (ie [dt-1]
+      (run* [out]
+        (presento dt-1 dt-2 out)))
 
-    (is
-      (=
-        [dt-8]
-
-        (run* [out]
-          (gt-minuteo dt-8 dt-7 out))))
-
-    (is
-      (=
-        [dt-7]
-
-        (run* [out]
-          (gt-minuteo dt-7 dt-6 out))))
-
-    (is
-      (=
-        []
-
-        (run* [out]
-          (gt-minuteo dt-7 dt-8 out))))
+    (ie []
+      (run* [out]
+        (presento dt-1 (plus n (secs 10)) out)))
   )
 )
 
-(deftest gt-secondo-test
-  (let [dt-9  (t/date-time 2013 2 2 14 20 5)
-        dt-10 (t/date-time 2013 2 2 14 30 5)
-        dt-11 (t/date-time 2013 2 2 14 30 10)]
-
-    (is
-      (=
-        [dt-11]
-
-        (run* [out]
-          (gt-secondo dt-11 dt-10 out))))
-
-    (is
-      (=
-        [dt-10]
-
-        (run* [out]
-          (gt-secondo dt-10 dt-9 out))))
-
-    (is
-      (=
-        []
-
-        (run* [out]
-          (gt-secondo dt-10 dt-11 out))))
+(deftest yearo-test
+  (let [n (now)]
+    (ie [(hour n)]
+      (run* [out]
+        (houro n out)))
   )
 )
 
-(deftest gt-milliseco-test
-  (let [dt-12 (t/date-time 2013 2 2 14 30 10 5)
-        dt-13 (t/date-time 2013 2 2 14 30 20 5)
-        dt-14 (t/date-time 2013 2 2 14 30 20 10)]
+(deftest montho-test
+  (let [n (now)]
+    (ie [(month n)]
+      (run* [out]
+        (montho n out)))
+  )
+)
 
-    (is
-      (=
-        [dt-14]
+(deftest dayo-test
+  (let [n (now)]
+    (ie [(day n)]
+      (run* [out]
+        (dayo n out)))
+  )
+)
 
-        (run* [out]
-          (gt-milliseco dt-14 dt-13 out))
-      )
-    )
+(deftest houro-test
+  (let [n (now)]
+    (ie [(hour n)]
+      (run* [out]
+        (houro n out)))
+  )
+)
 
-    (is
-      (=
-        [dt-13]
+(deftest minuteo-test
+  (let [n (now)]
+    (ie [(minute n)]
+      (run* [out]
+        (minuteo n out)))
+  )
+)
 
-        (run* [out]
-          (gt-milliseco dt-13 dt-12 out))
-      )
-    )
+(deftest seco-test
+  (let [n (now)]
+    (ie [(sec n)]
+      (run* [out]
+        (seco n out)))
+  )
+)
 
-    (is
-      (=
-        []
-
-        (run* [out]
-          (gt-milliseco dt-13 dt-14 out))
-      )
-    )
+(deftest millio-test
+  (let [n (now)]
+    (ie [(milli n)]
+      (run* [out]
+        (millio n out)))
   )
 )
