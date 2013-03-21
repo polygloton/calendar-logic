@@ -47,7 +47,7 @@
         (run* [year month day]
           (fresh [hour minute second millisec out]
             (fd/distinct [year month day])
-  ;          (fd/in day (fd/include 1 15)) ; I'm on a plane and I forget the function name
+            (== 0 hour minute second millisec)
             (conde
               [(== day 15)]
               [(== day 1)])
