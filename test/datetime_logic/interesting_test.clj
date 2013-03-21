@@ -47,7 +47,7 @@
         (run* [year month day]
           (fresh [hour minute second millisec out]
             (fd/distinct [year month day])
-            (== 0 hour minute second millisec)
+            (== 0 hour) (== 0 minute) (== 0 second) (== 0 millisec)
             (conde
               [(== day 15)]
               [(== day 1)])
