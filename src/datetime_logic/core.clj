@@ -46,10 +46,38 @@
 (defn date-timeo [dt & vars]
   (== dt vars))
 
+(defmacro year-domain [& years]
+  `(fd/in ~@years (fd/interval 1 3000)))
+
+(defmacro month-domain [& months]
+  `(fd/in ~@months (fd/interval 1 12)))
+
+(defmacro day-domain [& days]
+  `(fd/in ~@days (fd/interval 1 31)))
+
+(defmacro hour-domain [& hours]
+  `(fd/in ~@hours (fd/interval 0 23)))
+
+(defmacro minute-domain [& minutes]
+  `(fd/in ~@minutes (fd/interval 0 59)))
+
+(defmacro sec-domain [& seconds]
+  `(fd/in ~@seconds (fd/interval 0 59)))
+
+(defmacro milli-domain [& millis]
+  `(fd/in ~@millis (fd/interval 0 999)))
+
 (defn compare-date-time-with-predo
   [predo dt-1 dt-2 out]
   (fresh [year-1 month-1 day-1 hour-1 minute-1 second-1 millisec-1
           year-2 month-2 day-2 hour-2 minute-2 second-2 millisec-2]
+    (year-domain year-1 year-2)
+    (month-domain month-1 month-2)
+    (day-domain day-1 day-2)
+    (hour-domain hour-1 hour-2)
+    (minute-domain minute-1 minute-2)
+    (sec-domain second-1 second-2)
+    (milli-domain millisec-1 millisec-2)
     (== dt-1 [year-1 month-1 day-1 hour-1 minute-1 second-1 millisec-1])
     (== dt-2 [year-2 month-2 day-2 hour-2 minute-2 second-2 millisec-2])
     (conde
