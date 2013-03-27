@@ -1,8 +1,8 @@
-(ns datetime-logic.arithmetic-test
+(ns datetime-logic.test.arithmetic.modo-test
   (:refer-clojure :exclude [==])
   (:use
     clojure.test
-    datetime-logic.test-helper
+    datetime-logic.test.test-helper
     datetime-logic.arithmetic
     [clojure.core.logic :exclude [is]])
   (:require

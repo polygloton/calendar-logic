@@ -1,8 +1,8 @@
-(ns datetime-logic.interesting-test
+(ns datetime-logic.test.interesting-test
   (:refer-clojure :exclude [==])
   (:use
     clojure.test
-    datetime-logic.test-helper
+    datetime-logic.test.test-helper
     datetime-logic.core
     [clojure.core.logic :exclude [is]])
   (:require

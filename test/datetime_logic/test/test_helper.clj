@@ -1,4 +1,4 @@
-(ns datetime-logic.test-helper
+(ns datetime-logic.test.test-helper
   (:use clojure.test))
 
 (defmacro eg [subject _ expectation]

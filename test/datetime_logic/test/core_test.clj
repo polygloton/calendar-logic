@@ -1,4 +1,4 @@
-(ns datetime-logic.core-test
+(ns datetime-logic.test.core-test
   (:refer-clojure :exclude [==])
   (:use
     clojure.test
