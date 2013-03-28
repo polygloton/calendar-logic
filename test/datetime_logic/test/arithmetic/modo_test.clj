@@ -3,7 +3,7 @@
   (:use
     clojure.test
     datetime-logic.test.test-helper
-    datetime-logic.arithmetic
+    [datetime-logic.arithmetic :only [modo]]
     [clojure.core.logic :exclude [is]])
   (:require
     [clojure.core.logic.fd :as fd]))
