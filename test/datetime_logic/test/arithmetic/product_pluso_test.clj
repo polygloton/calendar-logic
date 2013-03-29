@@ -44,9 +44,8 @@
         (product-pluso x 10 q 40)))
     => [20 10 0])
 
-(comment ; fails, WTF?
   (eg
-    (run* [x y]
-      (fd/in x y (fd/interval 1 38))
-      (product-pluso x y 2 40))
-    => [[1 38] [2 19] [19 2] [38 1]])))
+      (run* [x y]
+        (fd/in x y (fd/interval 1 38))
+        (product-pluso x y 2 40))
+      => [[1 38] [2 19] [19 2] [38 1]]))
