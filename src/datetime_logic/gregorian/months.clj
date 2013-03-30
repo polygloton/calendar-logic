@@ -20,10 +20,18 @@
     [(== month-name-before :october) (== month-name-after :november)]
     [(== month-name-before :november) (== month-name-after :december)]))
 
+(defn month-aftero [month-name-before month-name-after]
+  (month-beforeo month-name-after month-name-before))
+
 (defn months-beforeo [month-name-after month-name-before]
   (conde
     [(month-beforeo month-name-after month-name-before)]
     [(fresh [temp] (month-beforeo month-name-after temp) (months-beforeo temp month-name-before))]))
+
+(defn months-aftero [month-name-before month-name-after]
+  (conde
+    [(month-aftero month-name-before month-name-after)]
+    [(fresh [temp] (month-aftero month-name-before temp) (months-aftero temp month-name-after))]))
 
 (defn month-numbero
   [month-name month-number]
