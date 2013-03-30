@@ -1,4 +1,4 @@
-(ns datetime-logic.years
+(ns datetime-logic.gregorian.years
   (:refer-clojure :exclude [==])
   (:use
     clojure.core.logic

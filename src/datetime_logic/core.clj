@@ -1,7 +1,8 @@
 (ns datetime-logic.core
   (:refer-clojure :exclude [==])
   (:use
-    clojure.core.logic)
+    clojure.core.logic
+    clojure.core.logic.protocols)
   (:require
     [clj-time.core :as time]
     [clojure.core.logic.fd :as fd]))

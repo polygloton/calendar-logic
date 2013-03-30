@@ -1,8 +1,8 @@
-(ns datetime-logic.months
+(ns datetime-logic.gregorian.months
   (:refer-clojure :exclude [==])
   (:use
     clojure.core.logic
-    [datetime-logic.years :only [standard-yearo leap-yearo]])
+    [datetime-logic.gregorian.years :only [standard-yearo leap-yearo]])
   (:require
     [clojure.core.logic.fd :as fd]))
 

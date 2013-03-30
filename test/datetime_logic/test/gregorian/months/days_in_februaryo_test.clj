@@ -1,9 +1,9 @@
-(ns datetime-logic.test.months.days-in-februaryo-test
+(ns datetime-logic.test.gregorian.months.days-in-februaryo-test
   (:refer-clojure :exclude [==])
   (:use
     clojure.test
     datetime-logic.test.test-helper
-    [datetime-logic.months :only [days-in-februaryo]]
+    [datetime-logic.gregorian.months :only [days-in-februaryo]]
     [clojure.core.logic :exclude [is]])
   (:require
     [clojure.core.logic.fd :as fd]))
