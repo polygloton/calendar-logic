@@ -1,10 +1,22 @@
-(ns datetime-logic.gregorian.months
+(ns datetime-logic.gregorian
   (:refer-clojure :exclude [==])
   (:use
     clojure.core.logic
-    [datetime-logic.gregorian.years :only [standard-yearo leap-yearo]])
+    datetime-logic.arithmetic)
   (:require
     [clojure.core.logic.fd :as fd]))
+
+(defn leap-yearo [year]
+  (conde
+    [(modo year 400 0)]
+    [(modo year 4 0) (fresh [mod] (fd/in mod (fd/interval 1 99)) (modo year 100 mod))]))
+
+(defn standard-yearo [year]
+  (fresh [mod1 mod2 mod3]
+    (conde
+      [(modo year 100 0) (fd/in mod1 (fd/interval 1 399)) (modo year 400 mod1)]
+      [(fd/in mod2 (fd/interval 1 99)) (modo year 100 mod2)
+       (fd/in mod3 (fd/interval 1 3)) (modo year 4 mod3)])))
 
 (defn month-beforeo [month-name-after month-name-before]
   (conde
@@ -73,3 +85,15 @@
 (defn days-in-month-nameo [year month-name days]
   (fresh [month-number]
     (month-numbero month-name month-number) (days-in-montho year month-number days)))
+
+; How many days do we count in the month of <given-month-name> if the current month is <current-month>?
+(defn count-days-in-montho [given-month-name current-month days]
+  (fresh [year month-num month-name]
+    (== current-month [year month-num])
+    (month-numbero month-name month-num)
+    (conde
+      [(conde
+         [(months-beforeo month-name given-month-name)]
+         [(== month-name given-month-name)])
+       (days-in-month-nameo year given-month-name days)]
+      [(months-aftero month-name given-month-name) (== days 0)])))

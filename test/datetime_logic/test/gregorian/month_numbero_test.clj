@@ -1,9 +1,9 @@
-(ns datetime-logic.test.gregorian.months.month-numbero-test
+(ns datetime-logic.test.gregorian.month-numbero-test
   (:refer-clojure :exclude [==])
   (:use
     clojure.test
     datetime-logic.test.test-helper
-    [datetime-logic.gregorian.months :only [month-numbero]]
+    [datetime-logic.gregorian :only [month-numbero]]
     [clojure.core.logic :exclude [is]])
   (:require
     [clojure.core.logic.fd :as fd]))

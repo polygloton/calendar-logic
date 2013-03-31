@@ -1,9 +1,9 @@
-(ns datetime-logic.test.gregorian.years.standard-yearo-test
+(ns datetime-logic.test.gregorian.standard-yearo-test
   (:refer-clojure :exclude [==])
   (:use
     clojure.test
     datetime-logic.test.test-helper
-    [datetime-logic.gregorian.years :only [standard-yearo]]
+    [datetime-logic.gregorian :only [standard-yearo]]
     [clojure.core.logic :exclude [is]])
   (:require
     [clojure.core.logic.fd :as fd]))
