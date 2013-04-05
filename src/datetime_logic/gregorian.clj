@@ -86,7 +86,7 @@
   (fresh [month-number]
     (month-numbero month-name month-number) (days-in-montho year month-number days)))
 
-(defn count-days-in-yearo [year month-num days]
+(defn count-month-days-in-yearo [year month-num days]
   (conde
     [(== month-num 0) (== days 0)]
     [(fresh [days-in-this-month last-month-num recur-days]
@@ -97,4 +97,15 @@
       (days-in-montho year month-num days-in-this-month)
       (fd/eq (= last-month-num (- month-num 1)))
       (fd/eq (= days (+ days-in-this-month recur-days)))
-      (count-days-in-yearo year last-month-num recur-days))]))
+      (count-month-days-in-yearo year last-month-num recur-days))]))
+
+(defn count-days-in-yearo [year month-num day days]
+  (conde
+    [(== month-num 1) (== day days)]
+    [(fresh [last-month-num days-from-months]
+       (fd/in last-month-num (fd/interval 1 11))
+       (fd/in days-from-months (fd/interval 31 335))
+       (fd/> month-num 1)
+       (fd/eq (= last-month-num (- month-num 1)))
+       (count-month-days-in-yearo year last-month-num days-from-months)
+       (fd/eq (= days (+ day days-from-months))))]))
