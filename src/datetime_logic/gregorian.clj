@@ -87,41 +87,14 @@
     (month-numbero month-name month-number) (days-in-montho year month-number days)))
 
 (defn count-days-in-yearo [year month-num days]
-  (fresh [d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12]
-    (conde
-      [(fd/>= month-num 1) (days-in-montho year 1 d1)]
-      [(fd/< month-num 1) (== d1 0)])
-    (conde
-      [(fd/>= month-num 2) (days-in-montho year 2 d2)]
-      [(fd/< month-num 2) (== d2 0)])
-    (conde
-      [(fd/>= month-num 3) (days-in-montho year 3 d3)]
-      [(fd/< month-num 3) (== d3 0)])
-    (conde
-      [(fd/>= month-num 4) (days-in-montho year 4 d4)]
-      [(fd/< month-num 4) (== d4 0)])
-    (conde
-      [(fd/>= month-num 5) (days-in-montho year 5 d5)]
-      [(fd/< month-num 5) (== d5 0)])
-    (conde
-      [(fd/>= month-num 6) (days-in-montho year 6 d6)]
-      [(fd/< month-num 6) (== d6 0)])
-    (conde
-      [(fd/>= month-num 7) (days-in-montho year 7 d7)]
-      [(fd/< month-num 7) (== d7 0)])
-    (conde
-      [(fd/>= month-num 8) (days-in-montho year 8 d8)]
-      [(fd/< month-num 8) (== d8 0)])
-    (conde
-      [(fd/>= month-num 9) (days-in-montho year 9 d9)]
-      [(fd/< month-num 9) (== d9 0)])
-    (conde
-      [(fd/>= month-num 10) (days-in-montho year 10 d10)]
-      [(fd/< month-num 10) (== d10 0)])
-    (conde
-      [(fd/>= month-num 11) (days-in-montho year 11 d11)]
-      [(fd/< month-num 11) (== d11 0)])
-    (conde
-      [(fd/>= month-num 12) (days-in-montho year 12 d12)]
-      [(fd/< month-num 12) (== d12 0)])
-    (fd/eq (= days (+ d1 (+ d2 (+ d3 (+ d4 (+ d5 (+ d6 (+ d7 (+ d8 (+ d9 (+ d10 (+ d11 d12)))))))))))))))
+  (conde
+    [(== month-num 0) (== days 0)]
+    [(fresh [days-in-this-month last-month-num recur-days]
+      (fd/in days-in-this-month (fd/interval 0 31))
+      (fd/in last-month-num (fd/interval 0 11))
+      (fd/in recur-days (fd/interval 0 366))
+      (fd/> month-num 0)
+      (days-in-montho year month-num days-in-this-month)
+      (fd/eq (= last-month-num (- month-num 1)))
+      (fd/eq (= days (+ days-in-this-month recur-days)))
+      (count-days-in-yearo year last-month-num recur-days))]))
