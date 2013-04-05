@@ -59,7 +59,7 @@
         (fresh [month]
           (fd/in month (fd/interval 1 12))
           (count-days-in-yearo 2013 month 1 days))))
-    => #{1 32 91 121 152 182 213 244 274 305 60 335})
+    => #{1 32 60 91 121 152 182 213 244 274 305 335})
 
   (eg
     (into #{}
@@ -76,6 +76,5 @@
           (fd/in month (fd/interval 1 12))
           (fd/in day (fd/interval 1 31))
           (count-days-in-yearo 2013 month day days))))
-
     => #{[10 27] [10 28] [10 29] [10 30] [10 31] [11 1] [11 2] [11 3] [11 4] [11 5] [11 6]})
 )
