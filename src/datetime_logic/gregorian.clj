@@ -103,9 +103,9 @@
   (conde
     [(== month-num 1) (== day days)]
     [(fresh [last-month-num days-from-months]
+       (fd/> month-num 1)
        (fd/in last-month-num (fd/interval 1 11))
        (fd/in days-from-months (fd/interval 31 335))
-       (fd/> month-num 1)
        (fd/eq (= last-month-num (- month-num 1)))
        (count-month-days-in-yearo year last-month-num days-from-months)
        (fd/eq (= days (+ day days-from-months))))]))
