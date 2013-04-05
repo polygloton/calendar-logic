@@ -65,7 +65,7 @@
     => [366])
 
   (eg
-    (into #{}
+    (set
       (run* [days]
         (fd/in days (fd/interval 1 365))
         (fresh [month]
@@ -74,7 +74,7 @@
     => #{1 32 60 91 121 152 182 213 244 274 305 335})
 
   (eg
-    (into #{}
+    (set
       (run* [days]
         (fd/in days (fd/interval 1 366))
         (fresh [month]
@@ -83,14 +83,14 @@
     => #{1 32 61 92 122 153 183 214 245 275 306 336})
 
   (eg
-    (into #{}
+    (set
       (run* [year]
         (fd/in year (fd/interval 1990 2020))
         (count-days-in-yearo year 12 31 366)))
     => #{1992 1996 2000 2004 2008 2012 2016 2020})
 
   (eg
-    (into #{}
+    (set
       (run* [month day]
         (fresh [days]
           (fd/in days (fd/interval 300 310))
