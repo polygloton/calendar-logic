@@ -43,6 +43,18 @@
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 Integer/MAX_VALUE))
+      (count-days-in-yearo 2012 11 30 q))
+    => [335])
+
+  (eg
+    (run* [q]
+      (fd/in q (fd/interval 0 Integer/MAX_VALUE))
+      (count-days-in-yearo 2012 12 1 q))
+    => [336])
+
+  (eg
+    (run* [q]
+      (fd/in q (fd/interval 0 Integer/MAX_VALUE))
       (count-days-in-yearo 2013 12 31 q))
     => [365])
 
@@ -60,6 +72,15 @@
           (fd/in month (fd/interval 1 12))
           (count-days-in-yearo 2013 month 1 days))))
     => #{1 32 60 91 121 152 182 213 244 274 305 335})
+
+  (eg
+    (into #{}
+      (run* [days]
+        (fd/in days (fd/interval 1 366))
+        (fresh [month]
+          (fd/in month (fd/interval 1 12))
+          (count-days-in-yearo 2012 month 1 days))))
+    => #{1 32 61 92 122 153 183 214 245 275 306 336})
 
   (eg
     (into #{}
