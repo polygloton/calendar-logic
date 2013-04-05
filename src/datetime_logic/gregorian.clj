@@ -86,44 +86,42 @@
   (fresh [month-number]
     (month-numbero month-name month-number) (days-in-montho year month-number days)))
 
-; How many days do we count in the month of <given-month-name> if the current month is <current-month>?
-(defn count-days-in-montho [given-month-name current-month days]
-  (fresh [year month-num month-name]
-    (== current-month [year month-num])
-    (month-numbero month-name month-num)
-    (conde
-      [(conde
-         [(months-beforeo month-name given-month-name)]
-         [(== month-name given-month-name)])
-       (days-in-month-nameo year given-month-name days)]
-      [(months-aftero month-name given-month-name) (== days 0)])))
-
-; Must rewrite this
 (defn count-days-in-yearo [year month-num days]
-  (fresh [m1days m2days m3days m4days m5days m6days m7days m8days m9days m10days m11days m12days current-month]
-    (== current-month [year month-num])
-    (count-days-in-montho :january current-month m1days)
-    (count-days-in-montho :february current-month m2days)
-    (count-days-in-montho :march current-month m3days)
-    (count-days-in-montho :april current-month m4days)
-    (count-days-in-montho :may current-month m5days)
-    (count-days-in-montho :june current-month m6days)
-    (count-days-in-montho :july current-month m7days)
-    (count-days-in-montho :august current-month m8days)
-    (count-days-in-montho :september current-month m9days)
-    (count-days-in-montho :october current-month m10days)
-    (count-days-in-montho :november current-month m11days)
-    (count-days-in-montho :december current-month m12days)
-    (fd/eq
-      (= days
-        (+ m1days
-          (+ m2days
-            (+ m3days
-              (+ m4days
-                (+ m5days
-                  (+ m6days
-                    (+ m7days
-                      (+ m8days
-                        (+ m9days
-                          (+ m10days
-                            (+ m11days m12days)))))))))))))))
+  (fresh [d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12]
+    (conde
+      [(fd/>= month-num 1) (days-in-montho year 1 d1)]
+      [(fd/< month-num 1) (== d1 0)])
+    (conde
+      [(fd/>= month-num 2) (days-in-montho year 2 d2)]
+      [(fd/< month-num 2) (== d2 0)])
+    (conde
+      [(fd/>= month-num 3) (days-in-montho year 3 d3)]
+      [(fd/< month-num 3) (== d3 0)])
+    (conde
+      [(fd/>= month-num 4) (days-in-montho year 4 d4)]
+      [(fd/< month-num 4) (== d4 0)])
+    (conde
+      [(fd/>= month-num 5) (days-in-montho year 5 d5)]
+      [(fd/< month-num 5) (== d5 0)])
+    (conde
+      [(fd/>= month-num 6) (days-in-montho year 6 d6)]
+      [(fd/< month-num 6) (== d6 0)])
+    (conde
+      [(fd/>= month-num 7) (days-in-montho year 7 d7)]
+      [(fd/< month-num 7) (== d7 0)])
+    (conde
+      [(fd/>= month-num 8) (days-in-montho year 8 d8)]
+      [(fd/< month-num 8) (== d8 0)])
+    (conde
+      [(fd/>= month-num 9) (days-in-montho year 9 d9)]
+      [(fd/< month-num 9) (== d9 0)])
+    (conde
+      [(fd/>= month-num 10) (days-in-montho year 10 d10)]
+      [(fd/< month-num 10) (== d10 0)])
+    (conde
+      [(fd/>= month-num 11) (days-in-montho year 11 d11)]
+      [(fd/< month-num 11) (== d11 0)])
+    (conde
+      [(fd/>= month-num 12) (days-in-montho year 12 d12)]
+      [(fd/< month-num 12) (== d12 0)])
+    (fd/eq (= days (+ d1 (+ d2 (+ d3 (+ d4 (+ d5 (+ d6 (+ d7 (+ d8 (+ d9 (+ d10 (+ d11 d12)))))))))))))))

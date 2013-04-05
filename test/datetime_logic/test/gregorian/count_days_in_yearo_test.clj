@@ -26,4 +26,11 @@
     (run* [q]
       (fd/in q (fd/interval 0 Integer/MAX_VALUE))
       (count-days-in-yearo 2013 10 q))
-    => [304]))
+    => [304])
+
+  (eg
+    (run* [q]
+      (fd/in q (fd/interval 0 Integer/MAX_VALUE))
+      (count-days-in-yearo 2013 q 304))
+    => [10])
+  )
