@@ -18,6 +18,8 @@ I want to provide an full feature datetime library that answers complex queries 
 
 This is actively being developed so use with caution.  Many simple examples are in the tests.
 
+Find months in 2013 where Friday falls on the 13th
+
 ```clojure
 (use 'clojure.core.logic)
 (require '[clojure.core.logic.fd :as fd])
