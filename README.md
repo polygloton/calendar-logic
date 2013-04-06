@@ -8,7 +8,7 @@ This is a Clojure library that allows queries to be run against the Gregorian ca
 
 _Why is this?_
 
-Mainly as an excuse for me to play with Clojure's core.logic.  Calendars seem like a great domain to experiment with logic programming.  Second, I hope that this becomes something useful, serving as a practical example of using core.logic in "the real world".
+Mainly as an excuse for me to play with Clojure's core.logic.  Calendars seem like a great domain to experiment with logic programming.  I hope that this becomes something useful, serving as a practical example of using core.logic in "the real world".
 
 _Where is this going?_
 
@@ -36,7 +36,7 @@ These are the inspirations influencing this project.
 
 - [The Reasoned Schemer](http://mitpress.mit.edu/books/reasoned-schemer) Taught me relational programming
 - [Calendrical Calculations](http://emr.cs.iit.edu/home/reingold/calendar-book/third-edition/) Provides an algorithmic explanation of several calendars.
-- The many lecturs of David Nolen, Daniel Friedman and William Byrd.
+- The many lectures of David Nolen, Daniel Friedman and William Byrd.
 - The Clojure/West 2013 miniKanren Confo.
 
 ## License
