@@ -125,3 +125,21 @@
     (fd/eq (= passed-leap-years-days (- (+ leap-4-days leap-400-days) leap-100-days)))
     (count-days-in-yearo year month-num day current-year-days)
     (fd/eq (= days (+ (+ passed-years-days passed-leap-years-days) current-year-days)))))
+
+(defn day-of-the-week-numbero [day-name day-number]
+  (conde
+    [(== day-name :sunday) (== day-number 0)]
+    [(== day-name :monday) (== day-number 1)]
+    [(== day-name :tuesday) (== day-number 2)]
+    [(== day-name :wednesday) (== day-number 3)]
+    [(== day-name :thursday) (== day-number 4)]
+    [(== day-name :friday) (== day-number 5)]
+    [(== day-name :saturday) (== day-number 6)]))
+
+(defn day-of-the-weeko [year month-num day day-name]
+  (fresh [fixed-days day-number]
+    (fd/in fixed-days (fd/interval 0 Integer/MAX_VALUE))
+    (fd/in day-number (fd/interval 0 6))
+    (fixed-from-gregoriano year month-num day fixed-days)
+    (modo fixed-days 7 day-number)
+    (day-of-the-week-numbero day-name day-number)))
