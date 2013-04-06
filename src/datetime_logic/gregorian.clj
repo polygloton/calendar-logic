@@ -109,3 +109,19 @@
        (fd/eq (= last-month-num (- month-num 1)))
        (count-month-days-in-yearo year last-month-num days-from-months)
        (fd/eq (= days (+ day days-from-months))))]))
+
+(defn fixed-from-gregoriano [year month-num day days]
+  (fresh [year-less-one leap-4-days leap-100-days leap-400-days
+          passed-leap-years-days passed-years-days current-year-days]
+    (fd/in year-less-one leap-4-days leap-100-days leap-400-days
+           passed-leap-years-days passed-years-days
+      (fd/interval 0 Integer/MAX_VALUE))
+    (fd/in current-year-days (fd/interval 0 366))
+    (fd/eq (= year-less-one (- year 1)))
+    (div-flooro year-less-one 4 leap-4-days)
+    (div-flooro year-less-one 100 leap-100-days)
+    (div-flooro year-less-one 400 leap-400-days)
+    (fd/eq (= passed-years-days (* 365 year-less-one)))
+    (fd/eq (= passed-leap-years-days (- (+ leap-4-days leap-400-days) leap-100-days)))
+    (count-days-in-yearo year month-num day current-year-days)
+    (fd/eq (= days (+ (+ passed-years-days passed-leap-years-days) current-year-days)))))
