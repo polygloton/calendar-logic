@@ -26,7 +26,6 @@ This is actively being developed so use with caution.  Many simple examples are 
 (use 'datetime-logic.gregorian)
 
 (run* [month]
-  (fd/in month (fd/interval 1 12))
   (day-of-the-week 2013 month 13 :friday))
 ```
 

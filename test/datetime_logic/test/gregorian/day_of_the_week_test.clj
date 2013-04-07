@@ -32,6 +32,5 @@
   (eg
     (set
       (run* [month]
-        (fd/in month (fd/interval 1 12))
         (day-of-the-week 2013 month 13 :friday)))
     => #{9 12}))

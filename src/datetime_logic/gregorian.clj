@@ -6,6 +6,11 @@
   (:require
     [clojure.core.logic.fd :as fd]))
 
+(defn month [month-num]
+  (fresh [month_]
+    (fd/in month_ (fd/interval 1 12))
+    (== month-num month_)))
+
 (defn leap-year [year]
   (conde
     [(mod year 400 0)]
@@ -138,6 +143,7 @@
 
 (defn day-of-the-week [year month-num day day-name]
   (fresh [fixed-days day-number]
+    (month month-num)
     (fd/in fixed-days (fd/interval 0 Integer/MAX_VALUE))
     (fd/in day-number (fd/interval 0 6))
     (fixed-from-gregorian year month-num day fixed-days)
