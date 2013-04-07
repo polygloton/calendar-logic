@@ -1,24 +1,24 @@
 (ns datetime-logic.gregorian
-  (:refer-clojure :exclude [==])
+  (:refer-clojure :exclude [== mod])
   (:use
     clojure.core.logic
     datetime-logic.arithmetic)
   (:require
     [clojure.core.logic.fd :as fd]))
 
-(defn leap-yearo [year]
+(defn leap-year [year]
   (conde
-    [(modo year 400 0)]
-    [(modo year 4 0) (fresh [mod] (fd/in mod (fd/interval 1 99)) (modo year 100 mod))]))
+    [(mod year 400 0)]
+    [(mod year 4 0) (fresh [mod1] (fd/in mod1 (fd/interval 1 99)) (mod year 100 mod1))]))
 
-(defn standard-yearo [year]
+(defn standard-year [year]
   (fresh [mod1 mod2 mod3]
     (conde
-      [(modo year 100 0) (fd/in mod1 (fd/interval 1 399)) (modo year 400 mod1)]
-      [(fd/in mod2 (fd/interval 1 99)) (modo year 100 mod2)
-       (fd/in mod3 (fd/interval 1 3)) (modo year 4 mod3)])))
+      [(mod year 100 0) (fd/in mod1 (fd/interval 1 399)) (mod year 400 mod1)]
+      [(fd/in mod2 (fd/interval 1 99)) (mod year 100 mod2)
+       (fd/in mod3 (fd/interval 1 3)) (mod year 4 mod3)])))
 
-(defn month-beforeo [month-name-after month-name-before]
+(defn month-before [month-name-after month-name-before]
   (conde
     [(== month-name-before :january) (== month-name-after :february)]
     [(== month-name-before :february) (== month-name-after :march)]
@@ -32,20 +32,20 @@
     [(== month-name-before :october) (== month-name-after :november)]
     [(== month-name-before :november) (== month-name-after :december)]))
 
-(defn month-aftero [month-name-before month-name-after]
-  (month-beforeo month-name-after month-name-before))
+(defn month-after [month-name-before month-name-after]
+  (month-before month-name-after month-name-before))
 
-(defn months-beforeo [month-name-after month-name-before]
+(defn months-before [month-name-after month-name-before]
   (conde
-    [(month-beforeo month-name-after month-name-before)]
-    [(fresh [temp] (month-beforeo month-name-after temp) (months-beforeo temp month-name-before))]))
+    [(month-before month-name-after month-name-before)]
+    [(fresh [temp] (month-before month-name-after temp) (months-before temp month-name-before))]))
 
-(defn months-aftero [month-name-before month-name-after]
+(defn months-after [month-name-before month-name-after]
   (conde
-    [(month-aftero month-name-before month-name-after)]
-    [(fresh [temp] (month-aftero month-name-before temp) (months-aftero temp month-name-after))]))
+    [(month-after month-name-before month-name-after)]
+    [(fresh [temp] (month-after month-name-before temp) (months-after temp month-name-after))]))
 
-(defn month-numbero
+(defn month-number
   [month-name month-number]
   (conde
     [(== month-name :january) (== month-number 1)]
@@ -61,16 +61,16 @@
     [(== month-name :november) (== month-number 11)]
     [(== month-name :december) (== month-number 12)]))
 
-(defn days-in-februaryo [year days]
+(defn days-in-february [year days]
   (fd/in days (fd/interval 28 29))
   (conde
-    [(standard-yearo year) (== days 28)]
-    [(leap-yearo year) (== days 29)]))
+    [(standard-year year) (== days 28)]
+    [(leap-year year) (== days 29)]))
 
-(defn days-in-montho [year month days]
+(defn days-in-month [year month days]
   (conde
     [(== month 1) (== days 31)]
-    [(== month 2) (days-in-februaryo year days)]
+    [(== month 2) (days-in-february year days)]
     [(== month 3) (== days 31)]
     [(== month 4) (== days 30)]
     [(== month 5) (== days 31)]
@@ -82,11 +82,11 @@
     [(== month 11) (== days 30)]
     [(== month 12) (== days 31)]))
 
-(defn days-in-month-nameo [year month-name days]
-  (fresh [month-number]
-    (month-numbero month-name month-number) (days-in-montho year month-number days)))
+(defn days-in-month-name [year month-name days]
+  (fresh [month-num]
+    (month-number month-name month-num) (days-in-month year month-num days)))
 
-(defn count-month-days-in-yearo [year month-num days]
+(defn count-month-days-in-year [year month-num days]
   (conde
     [(== month-num 0) (== days 0)]
     [(fresh [days-in-this-month last-month-num recur-days]
@@ -94,12 +94,12 @@
       (fd/in last-month-num (fd/interval 0 11))
       (fd/in recur-days (fd/interval 0 366))
       (fd/> month-num 0)
-      (days-in-montho year month-num days-in-this-month)
+      (days-in-month year month-num days-in-this-month)
       (fd/eq (= last-month-num (- month-num 1)))
       (fd/eq (= days (+ days-in-this-month recur-days)))
-      (count-month-days-in-yearo year last-month-num recur-days))]))
+      (count-month-days-in-year year last-month-num recur-days))]))
 
-(defn count-days-in-yearo [year month-num day days]
+(defn count-days-in-year [year month-num day days]
   (conde
     [(== month-num 1) (== day days)]
     [(fresh [last-month-num days-from-months]
@@ -107,10 +107,10 @@
        (fd/in last-month-num (fd/interval 1 11))
        (fd/in days-from-months (fd/interval 31 335))
        (fd/eq (= last-month-num (- month-num 1)))
-       (count-month-days-in-yearo year last-month-num days-from-months)
+       (count-month-days-in-year year last-month-num days-from-months)
        (fd/eq (= days (+ day days-from-months))))]))
 
-(defn fixed-from-gregoriano [year month-num day days]
+(defn fixed-from-gregorian [year month-num day days]
   (fresh [year-less-one leap-4-days leap-100-days leap-400-days
           passed-leap-years-days passed-years-days current-year-days]
     (fd/in year-less-one leap-4-days leap-100-days leap-400-days
@@ -118,15 +118,15 @@
       (fd/interval 0 Integer/MAX_VALUE))
     (fd/in current-year-days (fd/interval 0 366))
     (fd/eq (= year-less-one (- year 1)))
-    (div-flooro year-less-one 4 leap-4-days)
-    (div-flooro year-less-one 100 leap-100-days)
-    (div-flooro year-less-one 400 leap-400-days)
+    (div-floor year-less-one 4 leap-4-days)
+    (div-floor year-less-one 100 leap-100-days)
+    (div-floor year-less-one 400 leap-400-days)
     (fd/eq (= passed-years-days (* 365 year-less-one)))
     (fd/eq (= passed-leap-years-days (- (+ leap-4-days leap-400-days) leap-100-days)))
-    (count-days-in-yearo year month-num day current-year-days)
+    (count-days-in-year year month-num day current-year-days)
     (fd/eq (= days (+ (+ passed-years-days passed-leap-years-days) current-year-days)))))
 
-(defn day-of-the-week-numbero [day-name day-number]
+(defn day-of-the-week-number [day-name day-number]
   (conde
     [(== day-name :sunday) (== day-number 0)]
     [(== day-name :monday) (== day-number 1)]
@@ -136,10 +136,10 @@
     [(== day-name :friday) (== day-number 5)]
     [(== day-name :saturday) (== day-number 6)]))
 
-(defn day-of-the-weeko [year month-num day day-name]
+(defn day-of-the-week [year month-num day day-name]
   (fresh [fixed-days day-number]
     (fd/in fixed-days (fd/interval 0 Integer/MAX_VALUE))
     (fd/in day-number (fd/interval 0 6))
-    (fixed-from-gregoriano year month-num day fixed-days)
-    (modo fixed-days 7 day-number)
-    (day-of-the-week-numbero day-name day-number)))
+    (fixed-from-gregorian year month-num day fixed-days)
+    (mod fixed-days 7 day-number)
+    (day-of-the-week-number day-name day-number)))

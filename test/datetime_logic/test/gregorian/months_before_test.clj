@@ -1,87 +1,87 @@
-(ns datetime-logic.test.gregorian.months-beforeo-test
+(ns datetime-logic.test.gregorian.months-before-test
   (:refer-clojure :exclude [==])
   (:use
     clojure.test
     datetime-logic.test.test-helper
-    [datetime-logic.gregorian :only [months-beforeo]]
+    [datetime-logic.gregorian :only [months-before]]
     [clojure.core.logic :exclude [is]])
   (:require
     [clojure.core.logic.fd :as fd]))
 
-(deftest months-beforeo-test
+(deftest months-before-test
 
   (eg
     (run* [q]
-      (months-beforeo :january q))
+      (months-before :january q))
     => [])
 
   (eg
     (run* [q]
-      (months-beforeo :february q))
+      (months-before :february q))
     => [:january])
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :march q)))
+        (months-before :march q)))
     => #{:january :february})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :april q)))
+        (months-before :april q)))
     => #{:january :february :march})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :may q)))
+        (months-before :may q)))
     => #{:january :february :march :april})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :june q)))
+        (months-before :june q)))
     => #{:january :february :march :april :may})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :july q)))
+        (months-before :july q)))
     => #{:january :february :march :april :may :june})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :august q)))
+        (months-before :august q)))
     => #{:january :february :march :april :may :june :july})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :september q)))
+        (months-before :september q)))
     => #{:january :february :march :april :may :june :july :august})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :october q)))
+        (months-before :october q)))
     => #{:january :february :march :april :may :june :july :august :september})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :november q)))
+        (months-before :november q)))
     => #{:january :february :march :april :may :june :july :august :september :october})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :december q)))
+        (months-before :december q)))
     => #{:january :february :march :april :may :june :july :august :september :october :november})
 
   (eg
     (set
       (run* [q]
-        (months-beforeo :october q) (months-beforeo :may q)))
+        (months-before :october q) (months-before :may q)))
     => #{:january :february :march :april}))

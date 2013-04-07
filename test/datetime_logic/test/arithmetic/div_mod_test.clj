@@ -1,47 +1,47 @@
-(ns datetime-logic.test.arithmetic.div-modo-test
+(ns datetime-logic.test.arithmetic.div-mod-test
   (:refer-clojure :exclude [==])
   (:use
     clojure.test
     datetime-logic.test.test-helper
-    [datetime-logic.arithmetic :only [div-modo]]
+    [datetime-logic.arithmetic :only [div-mod]]
     [clojure.core.logic :exclude [is]])
   (:require
     [clojure.core.logic.fd :as fd]))
 
-(deftest div-modo-test
+(deftest div-mod-test
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 100))
-      (div-modo 5 2 1 q))
+      (div-mod 5 2 1 q))
     => [2])
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 100))
-      (div-modo 5 2 2 q))
+      (div-mod 5 2 2 q))
     => [])
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 100))
-      (div-modo 6 q q q))
+      (div-mod 6 q q q))
     => [2])
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 100))
-      (div-modo q 2 1 2))
+      (div-mod q 2 1 2))
     => [5])
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 100))
-      (div-modo 7 3 q 2))
+      (div-mod 7 3 q 2))
     => [1])
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 100))
-      (div-modo 7 q 1 2))
+      (div-mod 7 q 1 2))
     => [3]))

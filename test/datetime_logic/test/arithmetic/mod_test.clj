@@ -1,55 +1,55 @@
-(ns datetime-logic.test.arithmetic.modo-test
-  (:refer-clojure :exclude [==])
+(ns datetime-logic.test.arithmetic.mod-test
+  (:refer-clojure :exclude [== mod])
   (:use
     clojure.test
     datetime-logic.test.test-helper
-    [datetime-logic.arithmetic :only [modo]]
+    [datetime-logic.arithmetic :only [mod]]
     [clojure.core.logic :exclude [is]])
   (:require
     [clojure.core.logic.fd :as fd]))
 
-(deftest modo-test
+(deftest mod-test
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 12))
-      (modo 9 4 q))
+      (mod 9 4 q))
     => [1])
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 12))
-      (modo 10 4 q))
+      (mod 10 4 q))
     => [2])
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 12))
-      (modo 11 4 q))
+      (mod 11 4 q))
     => [3])
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 12))
-      (modo 12 4 q))
+      (mod 12 4 q))
     => [0])
 
   (eg
     (run* [q]
       (fd/in q (fd/interval 0 12))
-      (modo 11 q 3))
+      (mod 11 q 3))
     => [4 8])
 
   (eg
     (run 6 [q]
       (fd/in q (fd/interval 0 12))
-      (modo q 2 1))
+      (mod q 2 1))
     => [1 3 5 7 9 11])
 
   (eg
     (run 99 [x y]
       (fd/in x y (fd/interval 1 Integer/MAX_VALUE))
       (fd/< y x)
-      (modo x y 3))
+      (mod x y 3))
     => [[7 4] [8 5] [9 6] [10 7] [11 4] [11 8] [13 5] [12 9] [15 4] [13 10] [15 6] [14 11] [15 12] [18 5] [17 7]
         [19 4] [16 13] [17 14] [19 8] [18 15] [21 6] [19 16] [23 4] [21 9] [20 17] [23 5] [21 18] [24 7] [23 10]
         [22 19] [23 20] [27 4] [25 11] [24 21] [28 5] [27 6] [25 22] [27 8] [27 12] [26 23] [31 4] [27 24] [29 13]
@@ -63,5 +63,5 @@
       (run* [x y]
         (fd/in x y (fd/interval 1 100))
         (fd/< y x)
-        (modo x y 10)))
+        (mod x y 10)))
     => [[98 22] [100 18] [96 86] [98 44] [97 87] [100 30] [100 45] [98 88] [99 89] [100 90]]))
