@@ -27,7 +27,7 @@ This is actively being developed so use with caution.  Many simple examples are 
 
 (run* [month]
   (fd/in month (fd/interval 1 12))
-  (day-of-the-weeko 2013 month 13 :friday))
+  (day-of-the-week 2013 month 13 :friday))
 ```
 
 Results in __(9 12)__.
