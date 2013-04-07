@@ -38,7 +38,8 @@ Results in __(9 12)__.
 (require '[clojure.core.logic.fd :as fd])
 (use 'datetime-logic.us-holidays)
 
-(run* [day] (thanksgiving-day 2013 11 day))
+(run* [day]
+  (thanksgiving-day 2013 11 day))
 ```
 
 Results in __(28)__.
