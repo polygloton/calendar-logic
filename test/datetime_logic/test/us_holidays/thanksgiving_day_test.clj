@@ -1,20 +1,20 @@
-(ns datetime-logic.test.us-holidays.thanksgiving-test
+(ns datetime-logic.test.us-holidays.thanksgiving-day-test
   (:refer-clojure :exclude [==])
   (:use
     clojure.test
     datetime-logic.test.test-helper
-    [datetime-logic.us-holidays :only [thanksgiving]]
+    [datetime-logic.us-holidays :only [thanksgiving-day]]
     [clojure.core.logic :exclude [is]])
   (:require
     [clojure.core.logic.fd :as fd]))
 
-(deftest thanksgiving-test
+(deftest thanksgiving-day-test
 
   (eg
     (sort
       (run* [year month day]
         (fd/in year (fd/interval 1971 2020))
-        (thanksgiving year month day)))
+        (thanksgiving-day year month day)))
     => [[1971 11 25] [1972 11 23] [1973 11 22] [1974 11 28] [1975 11 27] [1976 11 25] [1977 11 24] [1978 11 23]
         [1979 11 22] [1980 11 27] [1981 11 26] [1982 11 25] [1983 11 24] [1984 11 22] [1985 11 28] [1986 11 27]
         [1987 11 26] [1988 11 24] [1989 11 23] [1990 11 22] [1991 11 28] [1992 11 26] [1993 11 25] [1994 11 24]
@@ -27,7 +27,7 @@
     (set
       (run* [year]
         (fd/in year (fd/interval 1971 2020))
-        (thanksgiving year 11 28)))
+        (thanksgiving-day year 11 28)))
     => #{1974 1985 1991 2002 1996 2013 2019})
 
   (eg
@@ -35,5 +35,5 @@
       (fd/in year (fd/interval 1 Integer/MAX_VALUE))
       (fresh [day]
         (fd/in day (fd/interval 1 31))
-        (thanksgiving year 12 day)))
+        (thanksgiving-day year 12 day)))
     => []))
