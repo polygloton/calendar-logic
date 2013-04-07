@@ -18,7 +18,7 @@ I want to provide an full feature datetime library that answers complex queries 
 
 This is actively being developed so use with caution.  Many simple examples are in the tests.
 
-Find months in 2013 where Friday falls on the 13th
+### Find months in 2013 where Friday falls on the 13th
 
 ```clojure
 (use 'clojure.core.logic)
@@ -30,7 +30,19 @@ Find months in 2013 where Friday falls on the 13th
   (day-of-the-weeko 2013 month 13 :friday))
 ```
 
-Results in _(9 12)_.
+Results in __(9 12)__.
+
+### What day is Thanksgiving (US) in 2013?
+
+```clojure
+(use 'clojure.core.logic)
+(require '[clojure.core.logic.fd :as fd])
+(use 'datetime-logic.us-holidays)
+
+(run* [day] (thanksgiving 2013 11 day))
+```
+
+Results in __(28)__.
 
 ## Inspiration
 
