@@ -86,7 +86,7 @@
   (fresh [month-num]
     (month-number month-name month-num) (days-in-month year month-num days)))
 
-(defn count-month-days-in-year [year month-num days]
+(defn month-days-in-year [year month-num days]
   (conde
     [(== month-num 0) (== days 0)]
     [(fresh [days-in-this-month last-month-num recur-days]
@@ -97,9 +97,9 @@
       (days-in-month year month-num days-in-this-month)
       (fd/eq (= last-month-num (- month-num 1)))
       (fd/eq (= days (+ days-in-this-month recur-days)))
-      (count-month-days-in-year year last-month-num recur-days))]))
+      (month-days-in-year year last-month-num recur-days))]))
 
-(defn count-days-in-year [year month-num day days]
+(defn days-in-year [year month-num day days]
   (conde
     [(== month-num 1) (== day days)]
     [(fresh [last-month-num days-from-months]
@@ -107,7 +107,7 @@
        (fd/in last-month-num (fd/interval 1 11))
        (fd/in days-from-months (fd/interval 31 335))
        (fd/eq (= last-month-num (- month-num 1)))
-       (count-month-days-in-year year last-month-num days-from-months)
+       (month-days-in-year year last-month-num days-from-months)
        (fd/eq (= days (+ day days-from-months))))]))
 
 (defn fixed-from-gregorian [year month-num day days]
@@ -123,7 +123,7 @@
     (div-floor year-less-one 400 leap-400-days)
     (fd/eq (= passed-years-days (* 365 year-less-one)))
     (fd/eq (= passed-leap-years-days (- (+ leap-4-days leap-400-days) leap-100-days)))
-    (count-days-in-year year month-num day current-year-days)
+    (days-in-year year month-num day current-year-days)
     (fd/eq (= days (+ (+ passed-years-days passed-leap-years-days) current-year-days)))))
 
 (defn day-of-the-week-number [day-name day-number]
