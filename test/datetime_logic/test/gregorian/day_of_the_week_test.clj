@@ -16,6 +16,11 @@
     => [:saturday])
 
   (eg
+    (run* [day-name]
+      (day-of-the-week 2013 4 6 :sunday))
+    => [])
+
+  (eg
     (set
       (run* [year]
         (fd/in year (fd/interval 2000 2020))
