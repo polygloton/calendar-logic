@@ -44,6 +44,17 @@ Results in __(9 12)__.
 
 Results in __(28)__.
 
+### Which federal holidays (US) are on Monday in 2013?
+
+```clojure
+(run* [holiday]
+  (fresh [month day]
+    (federal-holiday 2013 month day holiday)
+    (day-of-the-week 2013 month day :monday)))
+```
+
+Results in __(:mlk-bday :washington-bday :veterans-day :memorial-day :labor-day :columbus-day)__, which is only really interesting because it includes veterans day (not defined as a Monday).
+
 ## Inspiration
 
 These are the inspirations influencing this project.
