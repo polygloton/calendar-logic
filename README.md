@@ -11,7 +11,7 @@ Mainly as an excuse for me to play with Clojure's core.logic.  Calendars seem li
 
 ### What can it do?
 
-You can create intersting queries against the Gregorian calendar.  Eventually soon it will allow you to build queries that involve multiple calendars.
+You can create interesting queries against the Gregorian calendar.  Soon it will allow you to build queries that involve multiple calendars.
 
 ## Usage
 
