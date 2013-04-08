@@ -1,22 +1,21 @@
 # datetime-logic
 
-Datetime library for Clojure that uses core.logic.
 
-_What is this?_
+### What is this?
 
-This is a Clojure library that allows queries to be run against the Gregorian calendar (and potentially other calendars in the future).
+This is a date (and later, time) library for Clojure that uses core.logic.
 
-_Why is this?_
+### Why is this?
 
-Mainly as an excuse for me to play with Clojure's core.logic.  Calendars seem like a great domain to experiment with logic programming.  I hope that this becomes something useful, serving as a practical example of using core.logic in "the real world".
+Mainly as an excuse for me to play with Clojure's core.logic.  Calendars seem like a great domain to experiment with logic programming.  I hope that this becomes something useful, serving as another practical example of using core.logic in "the real world".
 
-_Where is this going?_
+### What can it do?
 
-I want to provide an full feature datetime library that answers complex queries about the Gregorian calendar.  I would also love to add more calendars in the future, with the ability to build queries that involve multiple calendars.
+You can create intersting queries against the Gregorian calendar.  Eventually soon it will allow you to build queries that involve multiple calendars.
 
 ## Usage
 
-This is actively being developed so use with caution.  There are many more examples are in the tests.
+This is actively being developed and so subject to frequent changes.  Here are some examples, and there are many more in the tests.
 
 ### Find months in 2013 where Friday falls on the 13th
 
