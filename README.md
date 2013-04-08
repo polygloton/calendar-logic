@@ -47,13 +47,18 @@ Results in __(28)__.
 ### Which federal holidays (US) are on Monday in 2013?
 
 ```clojure
+(use 'clojure.core.logic)
+(require '[clojure.core.logic.fd :as fd])
+(use 'datetime-logic.us-holidays)
+(use 'datetime-logic.gregorian)
+
 (run* [holiday]
   (fresh [month day]
     (federal-holiday 2013 month day holiday)
     (day-of-the-week 2013 month day :monday)))
 ```
 
-Results in __(:mlk-bday :washington-bday :veterans-day :memorial-day :labor-day :columbus-day)__, which is only really interesting because it includes veterans day (not defined as a Monday).
+Results in __(:mlk-bday :washington-bday :veterans-day :memorial-day :labor-day :columbus-day)__, which is only really interesting because it includes veterans day (defined as Nov 11th rather than a Monday).
 
 ## Inspiration
 
