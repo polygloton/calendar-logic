@@ -22,7 +22,6 @@ This is actively being developed so use with caution.  There are many more examp
 
 ```clojure
 (use 'clojure.core.logic)
-(require '[clojure.core.logic.fd :as fd])
 (use 'datetime-logic.gregorian)
 
 (run* [month]
@@ -35,7 +34,6 @@ Results in __(9 12)__.
 
 ```clojure
 (use 'clojure.core.logic)
-(require '[clojure.core.logic.fd :as fd])
 (use 'datetime-logic.us-holidays)
 
 (run* [day]
@@ -48,7 +46,6 @@ Results in __(28)__.
 
 ```clojure
 (use 'clojure.core.logic)
-(require '[clojure.core.logic.fd :as fd])
 (use 'datetime-logic.us-holidays)
 (use 'datetime-logic.gregorian)
 
