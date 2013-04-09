@@ -164,13 +164,13 @@
 
 (defn columbus-day [year month-num day]
   (fresh [year_ month_ day_]
-      (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
-      (== year year_)
-      (second-week day_)
-      (== day day_)
-      (== month_ 10)
-      (== month-num month_)
-      (day-of-the-week year_ month_ day_ :monday)))
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (second-week day_)
+    (== day day_)
+    (== month_ 10)
+    (== month-num month_)
+    (day-of-the-week year_ month_ day_ :monday)))
 
 (defn halloween [year month-num day]
   (fresh [year_]
@@ -242,5 +242,4 @@
       [(columbus-day year_ month_ day_) (== holiday :columbus-day)]
       [(veterans-day year_ month_ day_) (== holiday :veterans-day)]
       [(thanksgiving-day year_ month_ day_) (== holiday :thanksgiving-day)]
-      [(christmas-day year_ month_ day_) (== holiday :christmas-day)]
-      )))
+      [(christmas-day year_ month_ day_) (== holiday :christmas-day)])))
