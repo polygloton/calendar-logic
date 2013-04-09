@@ -38,6 +38,11 @@
     (fd/in day_ (fd/interval 25 31))
     (== day day_)))
 
+(defn- last-week-30 [day]
+  (fresh [day_]
+    (fd/in day_ (fd/interval 24 30))
+    (== day day_)))
+
 (defn new-years-day [year month-num day]
   (fresh [year_]
     (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
@@ -55,6 +60,20 @@
     (== month-num month_)
     (day-of-the-week year_ month_ day_ :monday)))
 
+(defn groundhog-day [year month-num day]
+  (fresh [year_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (== month-num 2)
+    (== day 2)))
+
+(defn valentines-day [year month-num day]
+  (fresh [year_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (== month-num 2)
+    (== day 14)))
+
 (defn washington-bday [year month-num day]
   (fresh [year_ month_ day_]
     (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
@@ -65,6 +84,33 @@
     (== month-num month_)
     (day-of-the-week year_ month_ day_ :monday)))
 
+(defn earth-day [year month-num day]
+  (fresh [year_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (== month-num 4)
+    (== day 22)))
+
+(defn arbor-day [year month-num day]
+  (fresh [year_ month_ day_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (last-week-30 day_)
+    (== day day_)
+    (== month_ 4)
+    (== month-num month_)
+    (day-of-the-week year_ month_ day_ :friday)))
+
+(defn mothers-day [year month-num day]
+  (fresh [year_ month_ day_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (second-week day_)
+    (== day day_)
+    (== month_ 5)
+    (== month-num month_)
+    (day-of-the-week year_ month_ day_ :sunday)))
+
 (defn memorial-day [year month-num day]
   (fresh [year_ month_ day_]
     (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
@@ -74,6 +120,23 @@
     (== month_ 5)
     (== month-num month_)
     (day-of-the-week year_ month_ day_ :monday)))
+
+(defn flag-day [year month-num day]
+  (fresh [year_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (== month-num 6)
+    (== day 14)))
+
+(defn fathers-day [year month-num day]
+  (fresh [year_ month_ day_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (third-week day_)
+    (== day day_)
+    (== month_ 6)
+    (== month-num month_)
+    (day-of-the-week year_ month_ day_ :sunday)))
 
 (defn independence-day [year month-num day]
   (fresh [year_]
@@ -92,6 +155,13 @@
     (== month-num month_)
     (day-of-the-week year_ month_ day_ :monday)))
 
+(defn patriot-day [year month-num day]
+  (fresh [year_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (== month-num 9)
+    (== day 11)))
+
 (defn columbus-day [year month-num day]
   (fresh [year_ month_ day_]
       (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
@@ -101,6 +171,13 @@
       (== month_ 10)
       (== month-num month_)
       (day-of-the-week year_ month_ day_ :monday)))
+
+(defn halloween [year month-num day]
+  (fresh [year_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (== month-num 10)
+    (== day 31)))
 
 (defn veterans-day [year month-num day]
   (fresh [year_]
@@ -118,6 +195,20 @@
     (== month_ 11)
     (== month-num month_)
     (day-of-the-week year_ month_ day_ :thursday)))
+
+(defn pearl-harbor-day [year month-num day]
+  (fresh [year_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (== month-num 12)
+    (== day 7)))
+
+(defn christmas-eve [year month-num day]
+  (fresh [year_]
+    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (== year year_)
+    (== month-num 12)
+    (== day 24)))
 
 (defn christmas-day [year month-num day]
   (fresh [year_]
