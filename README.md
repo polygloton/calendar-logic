@@ -61,7 +61,7 @@ Results in __(:mlk-bday :washington-bday :veterans-day :memorial-day :labor-day 
 These are the inspirations influencing this project.
 
 - [The Reasoned Schemer](http://mitpress.mit.edu/books/reasoned-schemer) Taught me relational programming
-- [Calendrical Calculations](http://emr.cs.iit.edu/home/reingold/calendar-book/third-edition/) Provides an algorithmic explanation of several calendars.
+- [Calendrical Calculations](http://emr.cs.iit.edu/home/reingold/calendar-book/third-edition/) Provides an algorithmic explanation of __thirty__ calendars.
 - The many lectures of David Nolen, Daniel Friedman and William Byrd.
 - The Clojure/West 2013 miniKanren Confo.
 
