@@ -1,21 +1,11 @@
-# datetime-logic
+# calendar-logic
 
 
-### What is this?
-
-This is a date (and later, time) library for Clojure that uses core.logic.
-
-### Why is this?
-
-Mainly as an excuse for me to play with Clojure's core.logic.  Calendars seem like a great domain to experiment with logic programming.  I hope that this becomes something useful, serving as another practical example of using core.logic in "the real world".
-
-### What can it do?
-
-You can create interesting queries against the Gregorian calendar.  Soon it will allow you to build queries that involve multiple calendars.
+This is a calendar library for Clojure that uses core.logic.  You can create interesting queries against the Gregorian calendar.  (In the future I hope to add the ability to build queries that involve multiple calendars).
 
 ## Usage
 
-This is actively being developed and so subject to frequent changes.  Here are some examples, and there are many more in the tests.
+Here are some examples, and there are many more in the tests.
 
 ### Find months in 2013 where Friday falls on the 13th
 
