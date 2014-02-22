@@ -149,3 +149,16 @@
     (fixed-from-gregorian year month-num day fixed-days)
     (mod fixed-days 7 day-number)
     (day-of-the-week-number day-name day-number)))
+
+(defn weekday [dow]
+  (fresh [dow_]
+         (!= dow :saturday)
+         (!= dow :sunday)
+         (== dow dow_)))
+
+(defn day-in-month [year month-num day]
+  (fresh [day_ max-days]
+         (fd/in day_ (fd/interval 1 31))
+         (days-in-month year month-num max-days)
+         (fd/<= day max-days)
+         (== day day_)))
