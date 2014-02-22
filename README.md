@@ -57,6 +57,6 @@ These are the inspirations influencing this project.
 
 ## License
 
-Copyright © 2013 Stephen Sloan
+Copyright © 2013-2014 Stephen Sloan
 
 Distributed under the Eclipse Public License, the same as Clojure.
