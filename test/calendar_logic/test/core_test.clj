@@ -1,13 +1,17 @@
 (ns calendar-logic.test.core-test
   (:refer-clojure :exclude [==])
+  (:require [clj-time.core
+             :refer [now year month day hour minute milli]
+             :as time])
   (:use
     clojure.test
     calendar-logic.core
-    [clojure.core.logic :exclude [is]]
-    [clj-time.core :exclude [extend]]))
+    [clojure.core.logic :exclude [is]]))
 
 (defmacro eg [& body]
   `(is (= ~@body)))
+
+(def sec time/second)
 
 (deftest unifying-date-times-test
   (let [n (now)]

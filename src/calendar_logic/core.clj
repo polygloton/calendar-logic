@@ -14,7 +14,7 @@
 ; https://github.com/clojure/core.logic/wiki/Extending-core.logic-%28Datomic-example%29
 
 (defn- unify-with-date-time* [u v s]
-  (let [fns [time/year time/month time/day time/hour time/minute time/sec time/milli]]
+  (let [fns [time/year time/month time/day time/hour time/minute time/second time/milli]]
     (when (and (coll? v) (> (count v) 0))
       (loop [fns fns
              v v
