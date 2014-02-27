@@ -1,7 +1,8 @@
 (ns calendar-logic.examples.happy-fun-days
   (:refer-clojure :exclude [==])
   (:use [clojure.core.logic :exclude [is]]
-        [clojure.test])
+        [clojure.test]
+        [calendar-logic.test.test-helper])
   (:require [calendar-logic.us-holidays :as hol]
             [calendar-logic.gregorian :as greg]
             [clojure.core.logic.fd :as fd]
@@ -19,7 +20,9 @@
                 [(greg/weekday dow) (hol/federal-holiday year month day holiday)]))))
 
 (deftest ^:example test-happy-fun-days-in-2014
-  (is (= [[2014 1 1 :wednesday] [2014 1 4 :saturday] [2014 1 5 :sunday]
+  (eg (sort
+       (happy-fun-days 2014))
+      => [[2014 1 1 :wednesday] [2014 1 4 :saturday] [2014 1 5 :sunday]
           [2014 1 11 :saturday] [2014 1 12 :sunday] [2014 1 18 :saturday]
           [2014 1 19 :sunday] [2014 1 20 :monday] [2014 1 25 :saturday]
           [2014 1 26 :sunday] [2014 2 1 :saturday] [2014 2 2 :sunday]
@@ -57,9 +60,7 @@
           [2014 11 29 :saturday] [2014 11 30 :sunday] [2014 12 6 :saturday]
           [2014 12 7 :sunday] [2014 12 13 :saturday] [2014 12 14 :sunday]
           [2014 12 20 :saturday] [2014 12 21 :sunday] [2014 12 25 :thursday]
-          [2014 12 27 :saturday] [2014 12 28 :sunday]]
-         (sort
-          (happy-fun-days 2014)))))
+          [2014 12 27 :saturday] [2014 12 28 :sunday]]))
 
 (defn business-days [year_]
   ;; TODO - Do this in one logic query
@@ -72,7 +73,9 @@
     (remove off-days all-days)))
 
 (deftest ^:example test-business-days-in-2014
-  (is (= [[2014 1 2 :thursday] [2014 1 3 :friday] [2014 1 6 :monday]
+  (eg (sort
+       (business-days 2014))
+      => [[2014 1 2 :thursday] [2014 1 3 :friday] [2014 1 6 :monday]
           [2014 1 7 :tuesday] [2014 1 8 :wednesday] [2014 1 9 :thursday]
           [2014 1 10 :friday] [2014 1 13 :monday] [2014 1 14 :tuesday]
           [2014 1 15 :wednesday] [2014 1 16 :thursday] [2014 1 17 :friday]
@@ -157,6 +160,4 @@
           [2014 12 17 :wednesday] [2014 12 18 :thursday] [2014 12 19 :friday]
           [2014 12 22 :monday] [2014 12 23 :tuesday] [2014 12 24 :wednesday]
           [2014 12 26 :friday] [2014 12 29 :monday] [2014 12 30 :tuesday]
-          [2014 12 31 :wednesday]]
-         (sort
-          (business-days 2014)))))
+          [2014 12 31 :wednesday]]))
