@@ -109,14 +109,29 @@
          (greg/day-in-month year month-num day)))
 
 (defn washington-bday [year month-num day]
-  (fresh [year_ month_ day_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
-    (== year year_)
-    (third-week day_)
-    (== day day_)
-    (== month_ 2)
-    (== month-num month_)
-    (day-of-the-week year_ month_ day_ :monday)))
+  (fresh [year' month-num' day']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (third-week day')
+         (== day day')
+         (== month-num' 2)
+         (== month-num month-num')
+         (greg/day-of-the-week year month-num day :monday)))
+
+(defn not-washington-bday [year month-num day]
+  (fresh [year' month-num' day']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (greg/month month-num')
+         (== month-num' month-num)
+         (fresh [dow]
+                (greg/day-of-the-week year month-num day dow)
+                (conde
+                 [(first-week day)]
+                 [(second-week day)]
+                 [(third-week day) (!= [month-num dow] [2 :monday])]
+                 [(fourth-week day)]
+                 [(fifth-week day)]))))
 
 (defn earth-day [year month-num day]
   (fresh [year_]
