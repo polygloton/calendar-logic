@@ -70,14 +70,14 @@
   (fresh [year' month-num']
          (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
          (== year year')
-         (== month-num' 1)
+         (greg/month month-num')
          (== month-num month-num')
          (fresh [dow]
                 (greg/day-of-the-week year month-num day dow)
                 (conde
                  [(first-week day)]
                  [(second-week day)]
-                 [(third-week day) (!= dow :monday)]
+                 [(third-week day) (!= [month-num dow] [1 :monday])]
                  [(fourth-week day)]
                  [(fifth-week day)]))))
 
