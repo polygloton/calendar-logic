@@ -1,5 +1,5 @@
 (ns calendar-logic.test.test-helper
   (:use clojure.test))
 
-(defmacro eg [subject _ expectation]
-  `(is (= ~subject ~expectation)))
+(defmacro eg [actual _ expectation]
+  `(is (= ~expectation ~actual)))
