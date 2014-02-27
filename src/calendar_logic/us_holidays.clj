@@ -134,11 +134,18 @@
                  [(fifth-week day)]))))
 
 (defn earth-day [year month-num day]
-  (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
-    (== year year_)
-    (== month-num 4)
-    (== day 22)))
+  (fresh [year']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (== month-num 4)
+         (== day 22)))
+
+(defn not-earth-day [year month-num day]
+  (fresh [year']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (!= [month-num day] [4 22])
+         (greg/day-in-month year month-num day)))
 
 (defn arbor-day [year month-num day]
   (fresh [year_ month_ day_]
