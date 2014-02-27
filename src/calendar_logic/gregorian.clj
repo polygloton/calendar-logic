@@ -151,14 +151,21 @@
     (day-of-the-week-number day-name day-number)))
 
 (defn weekday [dow]
-  (fresh [dow_]
-         (!= dow :saturday)
-         (!= dow :sunday)
-         (== dow dow_)))
+  (conde
+   [(== dow :monday)]
+   [(== dow :tuesday)]
+   [(== dow :wednesday)]
+   [(== dow :thursday)]
+   [(== dow :friday)]))
+
+(defn weekend [dow]
+  (conde
+   [(== dow :saturday)]
+   [(== dow :sunday)]))
 
 (defn day-in-month [year month-num day]
   (fresh [day_ max-days]
          (fd/in day_ (fd/interval 1 31))
-         (days-in-month year month-num max-days)
+         (== day day_)
          (fd/<= day max-days)
-         (== day day_)))
+         (days-in-month year month-num max-days)))
