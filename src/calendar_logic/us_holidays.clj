@@ -1,9 +1,7 @@
 (ns calendar-logic.us-holidays
   (:refer-clojure :exclude [==])
-  (:use
-    clojure.core.logic
-    calendar-logic.gregorian)
-  (:require
+  (:use clojure.core.logic)
+  (:require [calendar-logic.gregorian :refer :all :as greg]
       [clojure.core.logic.fd :as fd]))
 
 ; http://www.usa.gov/citizens/holidays.shtml
@@ -49,6 +47,14 @@
     (== year year_)
     (== month-num 1)
     (== day 1)))
+
+(defn not-new-years-day [year month-num day]
+  (fresh [year_]
+         (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+         (== year year_)
+         (== month-num 1)
+         (!= day 1)
+         (greg/day-in-month year month-num day)))
 
 (defn mlk-bday [year month-num day]
   (fresh [year_ month_ day_]
