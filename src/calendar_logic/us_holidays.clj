@@ -52,8 +52,7 @@
   (fresh [year_]
          (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
          (== year year_)
-         (== month-num 1)
-         (!= day 1)
+         (!= [month-num day] [1 1])
          (greg/day-in-month year month-num day)))
 
 (defn mlk-bday [year month-num day]
