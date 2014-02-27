@@ -95,11 +95,18 @@
          (greg/day-in-month year month-num day)))
 
 (defn valentines-day [year month-num day]
-  (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
-    (== year year_)
-    (== month-num 2)
-    (== day 14)))
+  (fresh [year']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (== month-num 2)
+         (== day 14)))
+
+(defn not-valentines-day [year month-num day]
+  (fresh [year']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (!= [month-num day] [2 14])
+         (greg/day-in-month year month-num day)))
 
 (defn washington-bday [year month-num day]
   (fresh [year_ month_ day_]
