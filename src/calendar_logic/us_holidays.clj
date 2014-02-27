@@ -82,11 +82,18 @@
                  [(fifth-week day)]))))
 
 (defn groundhog-day [year month-num day]
-  (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
-    (== year year_)
-    (== month-num 2)
-    (== day 2)))
+  (fresh [year']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (== month-num 2)
+         (== day 2)))
+
+(defn not-groundhog-day [year month-num day]
+  (fresh [year']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (!= [month-num day] [2 2])
+         (greg/day-in-month year month-num day)))
 
 (defn valentines-day [year month-num day]
   (fresh [year_]
