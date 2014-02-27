@@ -34,7 +34,6 @@
     (run* [year month day]
           (== year 2014)
           (== month 1)
-          (fd/in day (fd/interval ))
           (hol/not-new-years-day year month day)))
    => [[2014 1 2] [2014 1 3] [2014 1 4] [2014 1 5] [2014 1 6] [2014 1 7]
        [2014 1 8] [2014 1 9] [2014 1 10] [2014 1 11] [2014 1 12] [2014 1 13]
