@@ -79,11 +79,12 @@
          (greg/day-of-the-week year month-num day :monday)))
 
 (defn not-mlk-bday [year month-num day]
-  (fresh [year' month-num']
+  (fresh [year' month-num' day']
          (min-max year')
          (== year year')
-         (greg/month month-num')
+         (greg/day-in-month year month-num' day')
          (== month-num month-num')
+         (== day day')
          (fresh [dow]
                 (greg/day-of-the-week year month-num day dow)
                 (conde
@@ -135,8 +136,9 @@
   (fresh [year' month-num' day']
          (min-max year')
          (== year year')
-         (greg/month month-num')
-         (== month-num' month-num)
+         (greg/day-in-month year month-num' day')
+         (== month-num month-num')
+         (== day day')
          (fresh [dow]
                 (greg/day-of-the-week year month-num day dow)
                 (conde
@@ -193,11 +195,12 @@
          (greg/day-of-the-week year month-num day :sunday)))
 
 (defn not-mothers-day [year month-num day]
-  (fresh [year' month-num']
+  (fresh [year' month-num' day']
          (min-max year')
          (== year year')
-         (greg/month month-num')
+         (greg/day-in-month year month-num' day')
          (== month-num month-num')
+         (== day day')
          (fresh [dow]
                 (greg/day-of-the-week year month-num day dow)
                 (conde
@@ -289,11 +292,12 @@
          (day-of-the-week year month-num day :monday)))
 
 (defn not-labor-day [year month-num day]
-  (fresh [year' month-num']
+  (fresh [year' month-num' day']
          (min-max year')
          (== year year')
-         (greg/month month-num')
+         (greg/day-in-month year month-num' day')
          (== month-num month-num')
+         (== day day')
          (fresh [dow]
                 (greg/day-of-the-week year month-num day dow)
                 (conde

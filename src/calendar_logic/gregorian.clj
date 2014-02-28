@@ -164,8 +164,10 @@
    [(== dow :sunday)]))
 
 (defn day-in-month [year month-num day]
-  (fresh [day_ max-days]
-         (fd/in day_ (fd/interval 1 31))
-         (== day day_)
+  (fresh [day' month-num' max-days]
+         (fd/in day' (fd/interval 1 31))
+         (== day day')
+         (month month-num')
+         (== month-num month-num')
          (fd/<= day max-days)
          (days-in-month year month-num max-days)))
