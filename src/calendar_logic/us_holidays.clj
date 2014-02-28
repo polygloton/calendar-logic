@@ -56,7 +56,7 @@
 
 (defn new-years-day [year month-num day]
   (fresh [year_]
-         (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year_)
          (== year year_)
          (== month-num 1)
          (== day 1)))
