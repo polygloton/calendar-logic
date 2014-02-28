@@ -218,13 +218,10 @@
          (day-of-the-week year month-num day :monday)))
 
 (defn not-memorial-day [year month-num day]
-  (fresh [year' month-num' day']
+  (fresh [year' month-num']
          (min-max year')
          (== year year')
-         (greg/month month-num')
-         (== month-num month-num')
-         (greg/day-in-month year month-num day')
-         (== day day')
+         (greg/day-in-month year month-num day)
          (fresh [dow]
                 (greg/day-of-the-week year month-num day dow)
                 (conde
@@ -246,14 +243,27 @@
          (greg/day-in-month year month-num day)))
 
 (defn fathers-day [year month-num day]
-  (fresh [year_ month_ day_]
-    (min-max year_)
-    (== year year_)
-    (third-week day_)
-    (== day day_)
-    (== month_ 6)
-    (== month-num month_)
-    (day-of-the-week year_ month_ day_ :sunday)))
+  (fresh [year' day']
+    (min-max year')
+    (== year year')
+    (third-week day')
+    (== day day')
+    (== month-num 6)
+    (day-of-the-week year month-num day :sunday)))
+
+(defn not-fathers-day [year month-num day]
+  (fresh [year' month-num']
+         (min-max year')
+         (== year year')
+         (greg/day-in-month year month-num day)
+         (fresh [dow]
+                (greg/day-of-the-week year month-num day dow)
+                (conde
+                 [(first-week day)]
+                 [(second-week day)]
+                 [(third-week day) (!= [month-num dow] [6 :sunday])]
+                 [(fourth-week day)]
+                 [(fifth-week day)]))))
 
 (defn independence-day [year month-num day]
   (fresh [year_]
