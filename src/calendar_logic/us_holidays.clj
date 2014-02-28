@@ -232,11 +232,18 @@
                  [(last-week-31 day) (!= [month-num dow] [5 :monday])]))))
 
 (defn flag-day [year month-num day]
-  (fresh [year_]
-    (min-max year_)
-    (== year year_)
-    (== month-num 6)
-    (== day 14)))
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (== month-num 6)
+         (== day 14)))
+
+(defn not-flag-day [year month-num day]
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (!= [month-num day] [6 14])
+         (greg/day-in-month year month-num day)))
 
 (defn fathers-day [year month-num day]
   (fresh [year_ month_ day_]
