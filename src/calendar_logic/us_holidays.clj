@@ -294,11 +294,18 @@
                  [(fifth-week day)]))))
 
 (defn patriot-day [year month-num day]
-  (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
-    (== year year_)
-    (== month-num 9)
-    (== day 11)))
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (== month-num 9)
+         (== day 11)))
+
+(defn not-patriot-day [year month-num day]
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (!= [month-num day] [9 11])
+         (greg/day-in-month year month-num day)))
 
 (defn columbus-day [year month-num day]
   (fresh [year_ month_ day_]
