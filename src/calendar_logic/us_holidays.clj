@@ -63,14 +63,14 @@
 
 (defn not-new-years-day [year month-num day]
   (fresh [year_]
-         (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year_)
          (== year year_)
          (!= [month-num day] [1 1])
          (greg/day-in-month year month-num day)))
 
 (defn mlk-bday [year month-num day]
   (fresh [year' month-num' day']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (third-week day')
          (== day day')
@@ -80,7 +80,7 @@
 
 (defn not-mlk-bday [year month-num day]
   (fresh [year' month-num']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (greg/month month-num')
          (== month-num month-num')
@@ -95,35 +95,35 @@
 
 (defn groundhog-day [year month-num day]
   (fresh [year']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (== month-num 2)
          (== day 2)))
 
 (defn not-groundhog-day [year month-num day]
   (fresh [year']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (!= [month-num day] [2 2])
          (greg/day-in-month year month-num day)))
 
 (defn valentines-day [year month-num day]
   (fresh [year']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (== month-num 2)
          (== day 14)))
 
 (defn not-valentines-day [year month-num day]
   (fresh [year']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (!= [month-num day] [2 14])
          (greg/day-in-month year month-num day)))
 
 (defn washington-bday [year month-num day]
   (fresh [year' month-num' day']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (third-week day')
          (== day day')
@@ -133,7 +133,7 @@
 
 (defn not-washington-bday [year month-num day]
   (fresh [year' month-num' day']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (greg/month month-num')
          (== month-num' month-num)
@@ -148,21 +148,21 @@
 
 (defn earth-day [year month-num day]
   (fresh [year']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (== month-num 4)
          (== day 22)))
 
 (defn not-earth-day [year month-num day]
   (fresh [year']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (!= [month-num day] [4 22])
          (greg/day-in-month year month-num day)))
 
 (defn arbor-day [year month-num day]
   (fresh [year' month-num' day']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (last-week-30 day')
          (== day day')
@@ -172,7 +172,7 @@
 
 (defn not-arbor-day [year month-num day]
   (fresh [year' day']
-         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (min-max year')
          (== year year')
          (greg/day-in-month year month-num day')
          (== day day')
@@ -209,7 +209,7 @@
 
 (defn memorial-day [year month-num day]
   (fresh [year_ month_ day_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (last-week-31 day_)
     (== day day_)
@@ -219,14 +219,14 @@
 
 (defn flag-day [year month-num day]
   (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (== month-num 6)
     (== day 14)))
 
 (defn fathers-day [year month-num day]
   (fresh [year_ month_ day_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (third-week day_)
     (== day day_)
@@ -236,14 +236,14 @@
 
 (defn independence-day [year month-num day]
   (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (== month-num 7)
     (== day 4)))
 
 (defn labor-day [year month-num day]
   (fresh [year_ month_ day_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (first-week day_)
     (== day day_)
@@ -260,7 +260,7 @@
 
 (defn columbus-day [year month-num day]
   (fresh [year_ month_ day_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (second-week day_)
     (== day day_)
@@ -270,21 +270,21 @@
 
 (defn halloween [year month-num day]
   (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (== month-num 10)
     (== day 31)))
 
 (defn veterans-day [year month-num day]
   (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (== month-num 11)
     (== day 11)))
 
 (defn thanksgiving-day [year month-num day]
   (fresh [year_ month_ day_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (fourth-week day_)
     (== day day_)
@@ -294,35 +294,35 @@
 
 (defn pearl-harbor-day [year month-num day]
   (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (== month-num 12)
     (== day 7)))
 
 (defn christmas-eve [year month-num day]
   (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (== month-num 12)
     (== day 24)))
 
 (defn christmas-day [year month-num day]
   (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (== month-num 12)
     (== day 25)))
 
 (defn new-years-eve [year month-num day]
   (fresh [year_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year year_)
     (== month-num 12)
     (== day 31)))
 
 (defn federal-holiday [year month-num day holiday]
   (fresh [year_ month_ day_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
+    (min-max year_)
     (== year_ year)
     (fd/in month_ (fd/interval 1 12))
     (== month_ month-num)
