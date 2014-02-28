@@ -308,14 +308,27 @@
          (greg/day-in-month year month-num day)))
 
 (defn columbus-day [year month-num day]
-  (fresh [year_ month_ day_]
-    (min-max year_)
-    (== year year_)
-    (second-week day_)
-    (== day day_)
-    (== month_ 10)
-    (== month-num month_)
-    (day-of-the-week year_ month_ day_ :monday)))
+  (fresh [year' day']
+         (min-max year')
+         (== year year')
+         (second-week day')
+         (== day day')
+         (== month-num 10)
+         (day-of-the-week year month-num day :monday)))
+
+(defn not-columbus-day [year month-num day]
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (greg/day-in-month year month-num day)
+         (fresh [dow]
+                (greg/day-of-the-week year month-num day dow)
+                (conde
+                 [(first-week day)]
+                 [(second-week day) (!= [month-num dow] [10 :monday])]
+                 [(third-week day)]
+                 [(fourth-week day)]
+                 [(fifth-week day)]))))
 
 (defn halloween [year month-num day]
   (fresh [year_]
