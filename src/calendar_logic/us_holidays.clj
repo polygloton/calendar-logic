@@ -8,38 +8,48 @@
 
 (defn- first-week [day]
   (fresh [day_]
-    (fd/in day_ (fd/interval 1 7))
-    (== day day_)))
+         (fd/in day_ (fd/interval 1 7))
+         (== day day_)))
 
 (defn- second-week [day]
   (fresh [day_]
-    (fd/in day_ (fd/interval 8 14))
-    (== day day_)))
+         (fd/in day_ (fd/interval 8 14))
+         (== day day_)))
 
 (defn- third-week [day]
   (fresh [day_]
-    (fd/in day_ (fd/interval 15 21))
-    (== day day_)))
+         (fd/in day_ (fd/interval 15 21))
+         (== day day_)))
 
 (defn- fourth-week [day]
   (fresh [day_]
-    (fd/in day_ (fd/interval 22 28))
-    (== day day_)))
+         (fd/in day_ (fd/interval 22 28))
+         (== day day_)))
 
 (defn- fifth-week [day]
   (fresh [day_]
-    (fd/in day_ (fd/interval 29 31))
-    (== day day_)))
+         (fd/in day_ (fd/interval 29 31))
+         (== day day_)))
 
 (defn- last-week-31 [day]
   (fresh [day_]
-    (fd/in day_ (fd/interval 25 31))
-    (== day day_)))
+         (fd/in day_ (fd/interval 25 31))
+         (== day day_)))
+
+(defn- before-last-week-31 [day]
+  (fresh [day']
+         (fd/in day' (fd/interval 1 24))
+         (== day day')))
 
 (defn- last-week-30 [day]
   (fresh [day_]
-    (fd/in day_ (fd/interval 24 30))
-    (== day day_)))
+         (fd/in day_ (fd/interval 24 30))
+         (== day day_)))
+
+(defn- before-last-week-30 [day]
+  (fresh [day']
+         (fd/in day' (fd/interval 1 23))
+         (== day day')))
 
 (defn new-years-day [year month-num day]
   (fresh [year_]
@@ -148,14 +158,26 @@
          (greg/day-in-month year month-num day)))
 
 (defn arbor-day [year month-num day]
-  (fresh [year_ month_ day_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
-    (== year year_)
-    (last-week-30 day_)
-    (== day day_)
-    (== month_ 4)
-    (== month-num month_)
-    (day-of-the-week year_ month_ day_ :friday)))
+  (fresh [year' month-num' day']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (last-week-30 day')
+         (== day day')
+         (== month-num' 4)
+         (== month-num month-num')
+         (day-of-the-week year month-num day :friday)))
+
+(defn not-arbor-day [year month-num day]
+  (fresh [year' month-num' day']
+         (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
+         (== year year')
+         (greg/day-in-month year month-num day')
+         (== day day')
+         (fresh [dow]
+                (greg/day-of-the-week year month-num day dow)
+                (conde
+                 [(before-last-week-30 day)]
+                 [(last-week-30 day) (!= [month-num dow] [4 :friday])]))))
 
 (defn mothers-day [year month-num day]
   (fresh [year_ month_ day_]
