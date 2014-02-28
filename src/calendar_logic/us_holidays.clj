@@ -266,11 +266,18 @@
                  [(fifth-week day)]))))
 
 (defn independence-day [year month-num day]
-  (fresh [year_]
-    (min-max year_)
-    (== year year_)
-    (== month-num 7)
-    (== day 4)))
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (== month-num 7)
+         (== day 4)))
+
+(defn not-independence-day [year month-num day]
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (!= [month-num day] [7 4])
+         (greg/day-in-month year month-num day)))
 
 (defn labor-day [year month-num day]
   (fresh [year_ month_ day_]
