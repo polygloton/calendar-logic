@@ -58,6 +58,9 @@
          (== month-num 1)
          (== day 1)))
 
+(defn- min-max [q]
+  (fd/in q (fd/interval 1 Integer/MAX_VALUE)))
+
 (defn not-new-years-day [year month-num day]
   (fresh [year_]
          (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
@@ -168,7 +171,7 @@
          (day-of-the-week year month-num day :friday)))
 
 (defn not-arbor-day [year month-num day]
-  (fresh [year' month-num' day']
+  (fresh [year' day']
          (fd/in year' (fd/interval 1 Integer/MAX_VALUE))
          (== year year')
          (greg/day-in-month year month-num day')
@@ -180,14 +183,29 @@
                  [(last-week-30 day) (!= [month-num dow] [4 :friday])]))))
 
 (defn mothers-day [year month-num day]
-  (fresh [year_ month_ day_]
-    (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
-    (== year year_)
-    (second-week day_)
-    (== day day_)
-    (== month_ 5)
-    (== month-num month_)
-    (day-of-the-week year_ month_ day_ :sunday)))
+  (fresh [year' month-num' day']
+         (min-max year')
+         (== year year')
+         (second-week day')
+         (== day day')
+         (== month-num' 5)
+         (== month-num month-num')
+         (greg/day-of-the-week year month-num day :sunday)))
+
+(defn not-mothers-day [year month-num day]
+  (fresh [year' month-num']
+         (min-max year')
+         (== year year')
+         (greg/month month-num')
+         (== month-num month-num')
+         (fresh [dow]
+                (greg/day-of-the-week year month-num day dow)
+                (conde
+                 [(first-week day)]
+                 [(second-week day) (!= [month-num dow] [5 :sunday])]
+                 [(third-week day)]
+                 [(fourth-week day)]
+                 [(fifth-week day)]))))
 
 (defn memorial-day [year month-num day]
   (fresh [year_ month_ day_]
