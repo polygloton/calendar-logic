@@ -51,15 +51,15 @@
          (fd/in day' (fd/interval 1 23))
          (== day day')))
 
+(defn- min-max [q]
+  (fd/in q (fd/interval 1 Integer/MAX_VALUE)))
+
 (defn new-years-day [year month-num day]
   (fresh [year_]
          (fd/in year_ (fd/interval 1 Integer/MAX_VALUE))
          (== year year_)
          (== month-num 1)
          (== day 1)))
-
-(defn- min-max [q]
-  (fd/in q (fd/interval 1 Integer/MAX_VALUE)))
 
 (defn not-new-years-day [year month-num day]
   (fresh [year_]
