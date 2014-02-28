@@ -208,14 +208,28 @@
                  [(fifth-week day)]))))
 
 (defn memorial-day [year month-num day]
-  (fresh [year_ month_ day_]
-    (min-max year_)
-    (== year year_)
-    (last-week-31 day_)
-    (== day day_)
-    (== month_ 5)
-    (== month-num month_)
-    (day-of-the-week year_ month_ day_ :monday)))
+  (fresh [year' month-num' day']
+         (min-max year')
+         (== year year')
+         (last-week-31 day')
+         (== day day')
+         (== month-num' 5)
+         (== month-num month-num')
+         (day-of-the-week year month-num day :monday)))
+
+(defn not-memorial-day [year month-num day]
+  (fresh [year' month-num' day']
+         (min-max year')
+         (== year year')
+         (greg/month month-num')
+         (== month-num month-num')
+         (greg/day-in-month year month-num day')
+         (== day day')
+         (fresh [dow]
+                (greg/day-of-the-week year month-num day dow)
+                (conde
+                 [(before-last-week-31 day)]
+                 [(last-week-31 day) (!= [month-num dow] [5 :monday])]))))
 
 (defn flag-day [year month-num day]
   (fresh [year_]
