@@ -280,14 +280,28 @@
          (greg/day-in-month year month-num day)))
 
 (defn labor-day [year month-num day]
-  (fresh [year_ month_ day_]
-    (min-max year_)
-    (== year year_)
-    (first-week day_)
-    (== day day_)
-    (== month_ 9)
-    (== month-num month_)
-    (day-of-the-week year_ month_ day_ :monday)))
+  (fresh [year' day']
+         (min-max year')
+         (== year year')
+         (== month-num 9)
+         (first-week day')
+         (== day day')
+         (day-of-the-week year month-num day :monday)))
+
+(defn not-labor-day [year month-num day]
+  (fresh [year' month-num']
+         (min-max year')
+         (== year year')
+         (greg/month month-num')
+         (== month-num month-num')
+         (fresh [dow]
+                (greg/day-of-the-week year month-num day dow)
+                (conde
+                 [(first-week day) (!= [month-num dow] [9 :monday])]
+                 [(second-week day)]
+                 [(third-week day)]
+                 [(fourth-week day)]
+                 [(fifth-week day)]))))
 
 (defn patriot-day [year month-num day]
   (fresh [year_]
