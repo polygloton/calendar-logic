@@ -381,11 +381,18 @@
                  [(fifth-week day)]))))
 
 (defn pearl-harbor-day [year month-num day]
-  (fresh [year_]
-    (min-max year_)
-    (== year year_)
-    (== month-num 12)
-    (== day 7)))
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (== month-num 12)
+         (== day 7)))
+
+(defn not-pearl-harbor-day [year month-num day]
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (!= [month-num day] [12 7])
+         (greg/day-in-month year month-num day)))
 
 (defn christmas-eve [year month-num day]
   (fresh [year_]
