@@ -331,11 +331,17 @@
                  [(fifth-week day)]))))
 
 (defn halloween [year month-num day]
-  (fresh [year_]
-    (min-max year_)
-    (== year year_)
-    (== month-num 10)
-    (== day 31)))
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (== month-num 10)
+         (== day 31)))
+
+(defn not-halloween [year month-num day]
+  (fresh [year']
+         (min-max year')
+         (!= [month-num day] [10 31])
+         (greg/day-in-month year month-num day)))
 
 (defn veterans-day [year month-num day]
   (fresh [year_]
