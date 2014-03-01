@@ -6,47 +6,47 @@
 
 ; http://www.usa.gov/citizens/holidays.shtml
 
-(defn- first-week [day]
+(defn first-week [day]
   (fresh [day_]
          (fd/in day_ (fd/interval 1 7))
          (== day day_)))
 
-(defn- second-week [day]
+(defn second-week [day]
   (fresh [day_]
          (fd/in day_ (fd/interval 8 14))
          (== day day_)))
 
-(defn- third-week [day]
+(defn third-week [day]
   (fresh [day_]
          (fd/in day_ (fd/interval 15 21))
          (== day day_)))
 
-(defn- fourth-week [day]
+(defn fourth-week [day]
   (fresh [day_]
          (fd/in day_ (fd/interval 22 28))
          (== day day_)))
 
-(defn- fifth-week [day]
+(defn fifth-week [day]
   (fresh [day_]
          (fd/in day_ (fd/interval 29 31))
          (== day day_)))
 
-(defn- last-week-31 [day]
+(defn last-week-31 [day]
   (fresh [day_]
          (fd/in day_ (fd/interval 25 31))
          (== day day_)))
 
-(defn- before-last-week-31 [day]
+(defn before-last-week-31 [day]
   (fresh [day']
          (fd/in day' (fd/interval 1 24))
          (== day day')))
 
-(defn- last-week-30 [day]
+(defn last-week-30 [day]
   (fresh [day_]
          (fd/in day_ (fd/interval 24 30))
          (== day day_)))
 
-(defn- before-last-week-30 [day]
+(defn before-last-week-30 [day]
   (fresh [day']
          (fd/in day' (fd/interval 1 23))
          (== day day')))
