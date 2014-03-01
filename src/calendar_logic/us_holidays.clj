@@ -344,11 +344,18 @@
          (greg/day-in-month year month-num day)))
 
 (defn veterans-day [year month-num day]
-  (fresh [year_]
-    (min-max year_)
-    (== year year_)
-    (== month-num 11)
-    (== day 11)))
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (== month-num 11)
+         (== day 11)))
+
+(defn not-veterans-day [year month-num day]
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (!= [month-num day] [11 11])
+         (greg/day-in-month year month-num day)))
 
 (defn thanksgiving-day [year month-num day]
   (fresh [year_ month_ day_]
