@@ -358,14 +358,27 @@
          (greg/day-in-month year month-num day)))
 
 (defn thanksgiving-day [year month-num day]
-  (fresh [year_ month_ day_]
-    (min-max year_)
-    (== year year_)
-    (fourth-week day_)
-    (== day day_)
-    (== month_ 11)
-    (== month-num month_)
-    (day-of-the-week year_ month_ day_ :thursday)))
+  (fresh [year' day']
+         (min-max year')
+         (== year year')
+         (fourth-week day')
+         (== day day')
+         (== month-num 11)
+         (day-of-the-week year month-num day :thursday)))
+
+(defn not-thanksgiving-day [year month-num day]
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (greg/day-in-month year month-num day)
+         (fresh [dow]
+                (greg/day-of-the-week year month-num day dow)
+                (conde
+                 [(first-week day)]
+                 [(second-week day)]
+                 [(third-week day)]
+                 [(fourth-week day) (!= [month-num dow] [11 :thursday])]
+                 [(fifth-week day)]))))
 
 (defn pearl-harbor-day [year month-num day]
   (fresh [year_]
