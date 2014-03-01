@@ -395,11 +395,18 @@
          (greg/day-in-month year month-num day)))
 
 (defn christmas-eve [year month-num day]
-  (fresh [year_]
-    (min-max year_)
-    (== year year_)
-    (== month-num 12)
-    (== day 24)))
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (== month-num 12)
+         (== day 24)))
+
+(defn not-christmas-eve [year month-num day]
+  (fresh [year']
+         (min-max year')
+         (== year year')
+         (!= [month-num day] [12 24])
+         (greg/day-in-month year month-num day)))
 
 (defn christmas-day [year month-num day]
   (fresh [year']
