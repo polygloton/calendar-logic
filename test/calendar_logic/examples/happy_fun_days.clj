@@ -61,13 +61,29 @@
        [2014 12 25 :thursday] [2014 12 27 :saturday] [2014 12 28 :sunday]]))
 
 (defn business-days [year_]
-  ;; TODO - Do this in one logic query
-  (let [all-days (run* [year month day dow]
-                       (== year year_)
-                       (greg/day-in-month year month day)
-                       (greg/day-of-the-week year month day dow))
-        off-days (set (happy-fun-days year_))]
-    (remove off-days all-days)))
+  (run* [year month day dow]
+        (== year year_)
+        (greg/weekday dow)
+        (!= [month day] [1 1])
+        (!= [month day] [7 4])
+        (!= [month day] [11 11])
+        (!= [month day] [12 25])
+        (greg/day-in-month year month day)
+        (greg/day-of-the-week year month day dow)
+        (conde
+         [(== month 5) (conde
+                        [(hol/before-last-week-31 day)]
+                        [(hol/last-week-31 day)
+                         (!= dow :monday)])]
+         [(!= month 5) (conde
+                        [(hol/first-week day) (!= [month dow] [9 :monday])]
+                        [(hol/second-week day)
+                         (!= [month dow] [10 :monday])]
+                        [(hol/third-week day)
+                         (!= [month dow] [1 :monday])
+                         (!= [month dow] [2 :monday])]
+                        [(hol/fourth-week day) (!= [month dow] [11 :thursday])]
+                        [(hol/fifth-week day)])])))
 
 (deftest ^:example test-business-days-in-2014
   (eg (sort
